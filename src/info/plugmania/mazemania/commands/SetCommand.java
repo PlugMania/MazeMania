@@ -22,10 +22,6 @@ public class SetCommand {
 		}
 		Player player = (Player) sender;
 		
-		if(!plugin.hasPermission(player, "default")){
-			Util.sendMessageNoPerms(sender);
-			return true;
-		}
 		if(args.length <= 1){
 			sender.sendMessage(Util.formatMessage("Incorrect usage"));
 			//print out arena sub commands, user typed, /maze set
@@ -36,18 +32,22 @@ public class SetCommand {
 				Location loc = player.getLocation();
 				plugin.arena.setPos1(loc);
 				player.sendMessage(Util.formatMessage("Arena position set."));
+				return true;
 			} else if(args[1].equalsIgnoreCase("pos2")){
 				Location loc = player.getLocation();
 				plugin.arena.setPos2(loc);
 				player.sendMessage(Util.formatMessage("Arena position set."));
+				return true;
 			} else if(args[1].equalsIgnoreCase("lobby")){
 				Location loc = player.getLocation();
 				plugin.arena.setLobby(loc);
 				player.sendMessage(Util.formatMessage("Arena lobby position set."));
+				return true;
 			} else if(args[1].equalsIgnoreCase("spawn")){
 				Location loc = player.getLocation();
 				plugin.arena.setSpawn(loc);
 				player.sendMessage(Util.formatMessage("Arena spawn position set."));
+				return true;
 			}
 			
 		}

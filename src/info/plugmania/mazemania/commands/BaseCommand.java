@@ -42,6 +42,10 @@ public class BaseCommand implements CommandExecutor {
 					return setCommand.handle(sender, args);
 				} else if(args[0].equalsIgnoreCase("start")){
 					return arenaCommand.startHandle(sender, args);
+				} else if(args[0].equalsIgnoreCase("join")){
+					return arenaCommand.joinHandle(sender, args);
+				} else if(args[0].equalsIgnoreCase("leave")){
+					return arenaCommand.leaveHandle(sender, args);
 				}
 			}
 			
