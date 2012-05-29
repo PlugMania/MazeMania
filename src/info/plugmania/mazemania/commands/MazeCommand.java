@@ -11,13 +11,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 
-public class BaseCommand implements CommandExecutor {
+public class MazeCommand implements CommandExecutor {
 
-	private SetCommand setCommand;
-	private ArenaCommand arenaCommand;
+	public SetCommand setCommand;
+	public ArenaCommand arenaCommand;
 	
 	MazeMania plugin;
-	public BaseCommand(MazeMania instance) {
+	public MazeCommand(MazeMania instance) {
 		plugin = instance;
 		
 		setCommand = new SetCommand(plugin);
@@ -33,7 +33,7 @@ public class BaseCommand implements CommandExecutor {
 			
 			if(args.length == 0){
 				sender.sendMessage(Util.formatMessage("---------------------- " + Util.pdfFile.getName() + " ----------------------"));
-				sender.sendMessage(Util.formatMessage(plugin.getName() + Lang._("devBy") + Util.pdfFile.getAuthors().get(0)));
+				sender.sendMessage(Util.formatMessage(plugin.getName() + " " + Lang._("devBy") + Util.pdfFile.getAuthors().get(0)));
 				sender.sendMessage(Util.formatMessage("To view more information visit http://plugmania.github.com/ (<-- You can click it!)"));
 			}
 			
@@ -46,6 +46,8 @@ public class BaseCommand implements CommandExecutor {
 					return arenaCommand.joinHandle(sender, args);
 				} else if(args[0].equalsIgnoreCase("leave")){
 					return arenaCommand.leaveHandle(sender, args);
+				} else if(args[0].equalsIgnoreCase("add")){
+					return setCommand.addHandle(sender, args);
 				}
 			}
 			

@@ -56,6 +56,7 @@ public class Arena {
 	
 	private void updatePosLocs(){
 		String pos1 = plugin.mainConf.getString("arena.pos1");
+		if(pos1 == null) return;
 		String[] pos1Ar = pos1.split(":");
 		World pos1w = Bukkit.getWorld(pos1Ar[0]);
 		Location pos1Loc;
@@ -65,6 +66,7 @@ public class Arena {
 		pos1Loc = new Location(pos1w, Integer.parseInt(pos1Ar[1]), Integer.parseInt(pos1Ar[2]), Integer.parseInt(pos1Ar[3]));
 		
 		String pos2 = plugin.mainConf.getString("arena.pos2");
+		if(pos2 == null) return;
 		String[] pos2Ar = pos1.split(":");
 		World pos2w = Bukkit.getWorld(pos1Ar[0]);
 		Location pos2Loc;

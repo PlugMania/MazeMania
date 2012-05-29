@@ -50,6 +50,19 @@ public class PlayerListener implements Listener {
 		if(!plugin.arena.playing.contains(player)) return;
 		
 		if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
+			
+			if(event.getClickedBlock().getType().equals(Material.MAGMA_CREAM)){
+				plugin.mazeCommand.setCommand.selected.put(player, event.getClickedBlock().getLocation());
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onChestInteract(PlayerInteractEvent event){
+		Player player = event.getPlayer();
+		if(!plugin.arena.playing.contains(player)) return;
+		
+		if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
 			if(event.getClickedBlock().getType().equals(Material.CHEST)){
 				event.setCancelled(true);
 				

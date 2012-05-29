@@ -1,5 +1,7 @@
 package info.plugmania.mazemania.commands;
 
+import java.util.HashMap;
+
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,6 +12,8 @@ import info.plugmania.mazemania.Util;
 
 public class SetCommand {
 
+	public HashMap<Player, Location> selected = new HashMap<Player, Location>();
+	
 	MazeMania plugin;
 	public SetCommand(MazeMania instance) {
 		plugin = instance;
@@ -47,6 +51,37 @@ public class SetCommand {
 				Location loc = player.getLocation();
 				plugin.arena.setSpawn(loc);
 				player.sendMessage(Util.formatMessage("Arena spawn position set."));
+				return true;
+			}
+			
+		}
+		
+		return false;
+	}
+	
+	public boolean addHandle(CommandSender sender, String[] args){
+		if(!(sender instanceof Player)){
+			Util.sendMessageNotPlayer(sender);
+			return true;
+		}
+		Player player = (Player) sender;
+		
+		if(args.length <= 1){
+			sender.sendMessage(Util.formatMessage("Incorrect usage"));
+			//print out arena sub commands, user typed, /maze add
+		}
+		
+		if(args.length > 1){
+			if(args[1].equalsIgnoreCase("chest")){
+				Location loc = null;
+				if(selected.containsKey(player))
+					loc = selected.get(player);
+				if(loc == null){
+					player.sendMessage(Util.formatMessage("Select a block first with a magma cream."));
+					return true;
+				}
+				
+				player.sendMessage(Util.formatMessage("Position set. Debug - (Unimplemented)"));
 				return true;
 			}
 			

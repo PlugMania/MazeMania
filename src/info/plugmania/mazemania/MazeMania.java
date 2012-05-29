@@ -1,8 +1,15 @@
+/*
+ * TODO
+ * Chests
+ * Triggers, lightning (in essence a couple of effects)
+ * Winning prizes/a way of winning
+ * Mobs in arena
+ * Leaderboard/Scores
+ */
+
 package info.plugmania.mazemania;
 
-
-
-import info.plugmania.mazemania.commands.BaseCommand;
+import info.plugmania.mazemania.commands.MazeCommand;
 import info.plugmania.mazemania.helpers.Arena;
 import info.plugmania.mazemania.listeners.PlayerListener;
 
@@ -28,25 +35,25 @@ public class MazeMania extends JavaPlugin {
         configUtil = new ConfigUtil(this);
         util = new Util(this);
         lang = new Lang(this);
-        
-        arena = new Arena(this);
     }
 	
 	@Override
 	public void onDisable() {
-		Util.log(Util.pdfFile.getName() + Lang._("pluginDisabled"));
+		Util.log(Util.pdfFile.getName() + " " +  Lang._("pluginDisabled"));
 		
 	}
 	
 	@Override
 	public void onEnable() { //enable
 		Util.pdfFile = getDescription();
-		Util.log("----------- " + Util.pdfFile.getName() + Lang._("pluginEnabled") + " -----------");
+		Util.log("----------- " + Util.pdfFile.getName()  + " " + Lang._("pluginEnabled") + " -----------");
 		Util.log(Util.pdfFile.getName() + " Version " + Util.pdfFile.getVersion());
 		Util.log(Util.pdfFile.getName() + " By " + Util.pdfFile.getAuthors().get(0));
 		
 		ConfigUtil.loadConfig("config", "config");
 		mainConf = ConfigUtil.getConfig("config");
+		
+        arena = new Arena(this); //load after config
 		
 		lang.updateLocale(mainConf.getString("lang"));
 		
@@ -59,9 +66,10 @@ public class MazeMania extends JavaPlugin {
 		
 		Util.log(Lang._("loadedSuccess"));
 	}
-	
+	public MazeCommand mazeCommand;
 	private void registerCommands(){
-		getCommand("maze").setExecutor(new BaseCommand(this));
+		mazeCommand = new MazeCommand(this);
+		getCommand("maze").setExecutor(mazeCommand);
 	}
 
 	private String basePerm = "mazemania";

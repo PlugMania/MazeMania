@@ -5,3 +5,9 @@ version: 0.0.1
 #Choose lang, available: en
 lang: en
 
+arena:
+  pos1:
+  pos2:
+  lobby:
+  spawn:
+
