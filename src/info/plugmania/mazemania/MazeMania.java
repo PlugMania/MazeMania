@@ -3,6 +3,7 @@ package info.plugmania.mazemania;
 
 
 import info.plugmania.mazemania.commands.BaseCommand;
+import info.plugmania.mazemania.helpers.Arena;
 import info.plugmania.mazemania.listeners.PlayerListener;
 
 import org.bukkit.Bukkit;
@@ -17,14 +18,18 @@ public class MazeMania extends JavaPlugin {
 	
 	public boolean debug = false;
 	
-	public final ConfigUtil configUtil;
-	public final Util util;
-	public final Lang lang;
+	private final ConfigUtil configUtil;
+	private final Util util;
+	private final Lang lang;
+	
+	public Arena arena;
 	
 	public MazeMania() {	
         configUtil = new ConfigUtil(this);
         util = new Util(this);
         lang = new Lang(this);
+        
+        arena = new Arena(this);
     }
 	
 	@Override

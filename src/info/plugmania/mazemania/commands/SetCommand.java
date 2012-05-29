@@ -34,27 +34,19 @@ public class SetCommand {
 		if(args.length > 1){
 			if(args[1].equalsIgnoreCase("pos1")){
 				Location loc = player.getLocation();
-				int blockX = loc.getBlockX();
-				int blockY = loc.getBlockY();
-				int blockZ = loc.getBlockZ();
-				plugin.mainConf.set("arena.pos1", blockX + ":" + blockY + ":" + blockZ);
-				ConfigUtil.saveConfig(plugin.mainConf, "config");
+				plugin.arena.setPos1(loc);
 				player.sendMessage(Util.formatMessage("Arena position set."));
 			} else if(args[1].equalsIgnoreCase("pos2")){
 				Location loc = player.getLocation();
-				int blockX = loc.getBlockX();
-				int blockY = loc.getBlockY();
-				int blockZ = loc.getBlockZ();
-				plugin.mainConf.set("arena.pos2", blockX + ":" + blockY + ":" + blockZ);
-				ConfigUtil.saveConfig(plugin.mainConf, "config");
+				plugin.arena.setPos2(loc);
 				player.sendMessage(Util.formatMessage("Arena position set."));
+			} else if(args[1].equalsIgnoreCase("lobby")){
+				Location loc = player.getLocation();
+				plugin.arena.setLobby(loc);
+				player.sendMessage(Util.formatMessage("Arena lobby position set."));
 			} else if(args[1].equalsIgnoreCase("spawn")){
 				Location loc = player.getLocation();
-				int blockX = loc.getBlockX();
-				int blockY = loc.getBlockY();
-				int blockZ = loc.getBlockZ();
-				plugin.mainConf.set("arena.spawn", blockX + ":" + blockY + ":" + blockZ);
-				ConfigUtil.saveConfig(plugin.mainConf, "config");
+				plugin.arena.setSpawn(loc);
 				player.sendMessage(Util.formatMessage("Arena spawn position set."));
 			}
 			
