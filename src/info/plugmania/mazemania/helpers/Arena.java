@@ -1,14 +1,24 @@
 package info.plugmania.mazemania.helpers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 import info.plugmania.mazemania.ConfigUtil;
 import info.plugmania.mazemania.MazeMania;
 
 public class Arena {
 
+	private boolean isWaiting = false;
+	private boolean isPlaying = false;
+	
+	public List<Player> playing = new ArrayList<Player>();
+	public List<Player> waiting = new ArrayList<Player>();
+	
 	private Location higherPos;
 	private Location lowerPos;
 	
@@ -17,6 +27,32 @@ public class Arena {
 		plugin = instance;
 		
 		updatePosLocs();
+	}
+	
+	public boolean isWaiting(){
+		return isWaiting;
+	}
+	
+	public boolean isPlaying(){
+		return isPlaying;
+	}
+	
+	public void setWaiting(boolean val){
+		if(val){
+			isWaiting = true;
+			isPlaying = false;
+		} else {
+			isWaiting = false;
+		}
+	}
+	
+	public void setPlaying(boolean val){
+		if(val){
+			isWaiting = false;
+			isPlaying = true;
+		} else {
+			isPlaying = false;
+		}
 	}
 	
 	private void updatePosLocs(){
