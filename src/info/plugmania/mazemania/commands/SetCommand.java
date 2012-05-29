@@ -8,10 +8,10 @@ import info.plugmania.mazemania.ConfigUtil;
 import info.plugmania.mazemania.MazeMania;
 import info.plugmania.mazemania.Util;
 
-public class ArenaCommand {
+public class SetCommand {
 
 	MazeMania plugin;
-	public ArenaCommand(MazeMania instance) {
+	public SetCommand(MazeMania instance) {
 		plugin = instance;
 	}
 
@@ -48,6 +48,14 @@ public class ArenaCommand {
 				plugin.mainConf.set("arena.pos2", blockX + ":" + blockY + ":" + blockZ);
 				ConfigUtil.saveConfig(plugin.mainConf, "config");
 				player.sendMessage(Util.formatMessage("Arena position set."));
+			} else if(args[1].equalsIgnoreCase("spawn")){
+				Location loc = player.getLocation();
+				int blockX = loc.getBlockX();
+				int blockY = loc.getBlockY();
+				int blockZ = loc.getBlockZ();
+				plugin.mainConf.set("arena.spawn", blockX + ":" + blockY + ":" + blockZ);
+				ConfigUtil.saveConfig(plugin.mainConf, "config");
+				player.sendMessage(Util.formatMessage("Arena spawn position set."));
 			}
 			
 		}

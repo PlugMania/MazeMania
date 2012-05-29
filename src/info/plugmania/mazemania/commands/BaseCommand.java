@@ -13,13 +13,13 @@ import org.bukkit.entity.Player;
 
 public class BaseCommand implements CommandExecutor {
 
-	private ArenaCommand arenaCommand;
+	private SetCommand setCommand;
 	
 	MazeMania plugin;
 	public BaseCommand(MazeMania instance) {
 		plugin = instance;
 		
-		arenaCommand = new ArenaCommand(plugin);
+		setCommand = new SetCommand(plugin);
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class BaseCommand implements CommandExecutor {
 			
 			if(args.length > 0){
 				if(args[0].equalsIgnoreCase("set")){
-					return arenaCommand.handle(sender, args);
+					return setCommand.handle(sender, args);
 				}
 			}
 			
