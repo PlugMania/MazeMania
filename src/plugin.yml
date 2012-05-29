@@ -1,0 +1,9 @@
+name: MazeMania
+author: PlugMania
+main: info.plugmania.mazemania.MazeMania
+version: 0.0.1
+description: MazeMania is a mix of arena, added a bit of mobarena and spiced with some sweet thinking of PlugMania devs.
+commands:
+  maze:
+    usage: /maze
+    description: Root command
