@@ -111,7 +111,7 @@ public class Arena {
 	}
 	
 	public Location getSpawn(){
-		String spawn = plugin.mainConf.getString("arena.lobby");
+		String spawn = plugin.mainConf.getString("arena.spawn");
 		String[] spawnAr = spawn.split(":");
 		World spawnW = Bukkit.getWorld(spawnAr[0]);
 		
