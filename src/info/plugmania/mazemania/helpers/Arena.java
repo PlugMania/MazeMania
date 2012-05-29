@@ -38,9 +38,8 @@ public class Arena {
 	}
 	
 	public void setWaiting(boolean val){
-		if(val){
+		if(val && !isWaiting){
 			isWaiting = true;
-			isPlaying = false;
 		} else {
 			isWaiting = false;
 		}

@@ -1,5 +1,6 @@
 package info.plugmania.mazemania.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -30,6 +31,7 @@ public class ArenaCommand {
 		plugin.arena.playing.clear();
 		plugin.arena.playing.addAll(plugin.arena.waiting);
 		plugin.arena.waiting.clear();
+		plugin.arena.setPlaying(true);
 
 		for(Player p : plugin.arena.playing){
 			p.teleport(spawn);
@@ -52,6 +54,8 @@ public class ArenaCommand {
 		}
 
 		plugin.arena.waiting.add(player);
+		plugin.arena.setWaiting(true);
+		
 		player.teleport(lobby);
 		player.sendMessage(Util.formatMessage("The game will start shortly, you have been teleported to lobby"));
 		return true;
@@ -66,13 +70,26 @@ public class ArenaCommand {
 
 		if(plugin.arena.waiting.contains(player)){
 			plugin.arena.waiting.remove(player);
+			
+			if(plugin.arena.waiting.isEmpty())
+				plugin.arena.setWaiting(false);
+			
+			
+			player.teleport(player.getWorld().getSpawnLocation());
 			player.sendMessage(Util.formatMessage("You have left the maze lobby"));
 			return true;
 		} else if(plugin.arena.playing.contains(player)){
+			if(plugin.arena.playing.isEmpty()){
+				plugin.arena.setPlaying(false);
+				Bukkit.broadcastMessage(Util.formatBroadcast("Maze game forfited, all players left!"));
+			}
+			
 			plugin.arena.playing.remove(player);
+			player.teleport(player.getWorld().getSpawnLocation());
 			player.sendMessage(Util.formatMessage("You have left the maze"));
 			return false;
 		} else {
+			player.teleport(player.getWorld().getSpawnLocation());
 			player.sendMessage(Util.formatMessage("You are not in the maze"));
 			return true;
 		}
