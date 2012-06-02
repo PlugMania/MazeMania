@@ -129,6 +129,18 @@ public class Arena {
 		ConfigUtil.saveConfig(plugin.mainConf, "config");
 	}
 	
+	public boolean isInArena(Location loc){
+		int x = loc.getBlockX();
+		int y = loc.getBlockY();
+		int z = loc.getBlockZ();
+		if(x > lowerPos.getBlockX() && x < higherPos.getBlockX()
+				&& y > lowerPos.getBlockY() && y < higherPos.getBlockY()
+				&& z > lowerPos.getBlockZ() && z < higherPos.getBlockZ()){
+			return true;
+		}
+		return false;
+	}
+	
 	public Location getLowerPos(){
 		return lowerPos;
 	}
