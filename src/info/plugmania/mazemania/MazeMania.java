@@ -27,26 +27,24 @@ public class MazeMania extends JavaPlugin {
 	
 	private final ConfigUtil configUtil;
 	private final Util util;
-	private final Lang lang;
 	
 	public Arena arena;
 	
 	public MazeMania() {	
         configUtil = new ConfigUtil(this);
         util = new Util(this);
-        lang = new Lang(this);
     }
 	
 	@Override
 	public void onDisable() {
-		Util.log(Util.pdfFile.getName() + " " +  Lang._("pluginDisabled"));
+		Util.log(Util.pdfFile.getName() + " has been disabled");
 		
 	}
 	
 	@Override
 	public void onEnable() { //enable
 		Util.pdfFile = getDescription();
-		Util.log("----------- " + Util.pdfFile.getName()  + " " + Lang._("pluginEnabled") + " -----------");
+		Util.log("----------- " + Util.pdfFile.getName()  + " has been enabled" + " -----------");
 		Util.log(Util.pdfFile.getName() + " Version " + Util.pdfFile.getVersion());
 		Util.log(Util.pdfFile.getName() + " By " + Util.pdfFile.getAuthors().get(0));
 		
@@ -55,8 +53,6 @@ public class MazeMania extends JavaPlugin {
 		
         arena = new Arena(this); //load after config
 		
-		lang.updateLocale(mainConf.getString("lang"));
-		
 		debug = mainConf.getBoolean("debug", false);
 		
 		PluginManager pm = getServer().getPluginManager();
@@ -64,7 +60,7 @@ public class MazeMania extends JavaPlugin {
 		
 		registerCommands();
 		
-		Util.log(Lang._("loadedSuccess"));
+		Util.log("Succefully loaded");
 	}
 	public MazeCommand mazeCommand;
 	private void registerCommands(){

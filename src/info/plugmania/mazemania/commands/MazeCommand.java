@@ -1,7 +1,5 @@
 package info.plugmania.mazemania.commands;
 
-
-import info.plugmania.mazemania.Lang;
 import info.plugmania.mazemania.MazeMania;
 import info.plugmania.mazemania.Util;
 
@@ -33,7 +31,7 @@ public class MazeCommand implements CommandExecutor {
 			
 			if(args.length == 0){
 				sender.sendMessage(Util.formatMessage("---------------------- " + Util.pdfFile.getName() + " ----------------------"));
-				sender.sendMessage(Util.formatMessage(plugin.getName() + " " + Lang._("devBy") + Util.pdfFile.getAuthors().get(0)));
+				sender.sendMessage(Util.formatMessage(plugin.getName() + " developed by " + Util.pdfFile.getAuthors().get(0)));
 				sender.sendMessage(Util.formatMessage("To view more information visit http://plugmania.github.com/ (<-- You can click it!)"));
 			}
 			

@@ -36,7 +36,7 @@ public class ConfigUtil {
 			try {
 				conf.save(file);
 			} catch (IOException e) {
-				Util.log(Lang._("failedSaveConfig"));
+				Util.log("Failed to save config: " + confName);
 			}
 		}
 	}
@@ -48,20 +48,20 @@ public class ConfigUtil {
 		File file = new File(plugin.getDataFolder() + File.separator + confName + ".yml");
 		
 		if(!dataFolder.exists()){
-			Util.debug(Lang._("tryCreatePluginFolder"));
+			Util.debug("Trying to create plugin folder");
 			try {
                 boolean success = new File(plugin.getDataFolder().toString()).mkdir();
                 if (success) {
-                    Util.log(Lang._("successCreatePluginFolder"));
+                	Util.log("Plugin folder successfully created");
                 }
             } catch (Exception e) {
-                Util.log(Lang._("failCreatePluginFolder"));
+            	Util.log("Failed to create plugin folder");
                 Util.debug(e.getMessage());
             }
 		}
 		
 		if(dataFolder.exists() && !file.exists()){
-			Util.debug(Lang._("tryingToCreateFile") + confName);
+			Util.debug("Trying to create file: " + confName);
 			try {
                 boolean success = false;
         		InputStream templateIn = plugin.getResource("resources" + File.separator + templateName + ".yml");
@@ -77,11 +77,45 @@ public class ConfigUtil {
             	templateIn.close();
             	outStream.flush();
             	outStream.close();
+                if (success)
+                	Util.log("Successfully created file: " + confName);
+            } catch (Exception e) {
+            	Util.log("Failed to create file: " + confName);
+                e.printStackTrace();
+            }
+		}
+	}
+	
+	public static void loadConfig(String confName){
+		if(confName == null) return;
+		
+		File dataFolder = new File(plugin.getDataFolder().toString());
+		File file = new File(plugin.getDataFolder() + File.separator + confName + ".yml");
+		
+		if(!dataFolder.exists()){
+			Util.debug("Trying to create plugin folder");
+			try {
+                boolean success = new File(plugin.getDataFolder().toString()).mkdir();
                 if (success) {
-                    Util.log(Lang._("successToCreateFile") + confName);
+                	Util.log("Plugin folder successfully created");
                 }
             } catch (Exception e) {
-                Util.log(Lang._("failToCreateFile") + confName);
+            	Util.log("Failed to create plugin folder");
+                Util.debug(e.getMessage());
+            }
+		}
+		
+		if(dataFolder.exists() && !file.exists()){
+			Util.debug("Trying to create file: " + confName);
+			try {
+                boolean success = false;
+                
+                file.createNewFile();
+                
+                if (success)
+                	Util.log("Successfully created file: " + confName);
+            } catch (Exception e) {
+            	Util.log("Failed to create file: " + confName);
                 e.printStackTrace();
             }
 		}
