@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -31,9 +32,9 @@ public class PlayerListener implements Listener {
 		if(!plugin.hasPermission(event.getPlayer(), "arena.command")) event.setCancelled(true);
 	}
 		@EventHandler
-		public void Creeper(EntityExplodeEvent  event){
-			if(event.getEntity() instanceof Creeper || event.getEntity() instanceof TNTPrimed);
-			event.setCancelled(true);
+		public void Explosion(EntityExplodeEvent event){
+			if(plugin.arena.isInArena(event.getEntity().getLocation()))
+				event.setCancelled(true);
 		}
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event){
