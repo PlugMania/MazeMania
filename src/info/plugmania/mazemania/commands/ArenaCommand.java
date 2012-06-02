@@ -1,9 +1,13 @@
 package info.plugmania.mazemania.commands;
 
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import info.plugmania.mazemania.MazeMania;
 import info.plugmania.mazemania.Util;
@@ -14,6 +18,8 @@ public class ArenaCommand {
 	public ArenaCommand(MazeMania instance) {
 		plugin = instance;
 	}
+	
+	private HashMap<Player, ItemStack[]> invs = new HashMap<Player, ItemStack[]>();
 	
 	public boolean startHandle(CommandSender sender, String[] args) {
 		if(!(sender instanceof Player)){
@@ -53,6 +59,8 @@ public class ArenaCommand {
 			return true;
 		}
 
+		invs.put(player, player.getInventory().getContents());
+		player.getInventory().clear();
 		plugin.arena.waiting.add(player);
 		plugin.arena.setWaiting(true);
 		
@@ -76,6 +84,11 @@ public class ArenaCommand {
 			
 			
 			player.teleport(player.getWorld().getSpawnLocation());
+			
+			player.getInventory().clear();
+			if(invs.containsKey(player))
+				player.getInventory().setContents(invs.get(player));
+			
 			player.sendMessage(Util.formatMessage("You have left the maze lobby"));
 			return true;
 		} else if(plugin.arena.playing.contains(player)){
@@ -86,6 +99,11 @@ public class ArenaCommand {
 			
 			plugin.arena.playing.remove(player);
 			player.teleport(player.getWorld().getSpawnLocation());
+			
+			player.getInventory().clear();
+			if(invs.containsKey(player))
+				player.getInventory().setContents(invs.get(player));
+			
 			player.sendMessage(Util.formatMessage("You have left the maze"));
 			return false;
 		} else {
