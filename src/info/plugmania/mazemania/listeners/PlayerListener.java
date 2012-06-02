@@ -30,7 +30,11 @@ public class PlayerListener implements Listener {
 		if(!plugin.arena.playing.contains(event.getPlayer())) return;
 		if(!plugin.hasPermission(event.getPlayer(), "arena.command")) event.setCancelled(true);
 	}
-	
+		@EventHandler
+		public void Creeper(EntityExplodeEvent  event){
+			if(event.getEntity() instanceof Creeper || event.getEntity() instanceof TNTPrimed);
+			event.setCancelled(true);
+		}
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event){
 		Player player = event.getEntity();
