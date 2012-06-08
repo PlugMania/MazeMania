@@ -30,22 +30,38 @@ public class MazeCommand implements CommandExecutor {
 				player = (Player) sender;
 			
 			if(args.length == 0){
-				sender.sendMessage(Util.formatMessage("---------------------- " + Util.pdfFile.getName() + " ----------------------"));
-				sender.sendMessage(Util.formatMessage(plugin.getName() + " developed by " + Util.pdfFile.getAuthors().get(0)));
-				sender.sendMessage(Util.formatMessage("To view more information visit http://plugmania.github.com/ (<-- You can click it!)"));
+				sender.sendMessage(Util.formatMessage("---------------------- MazeMania Help ----------------------"));
+				sender.sendMessage(Util.formatMessage("Player Commands:"));
+				sender.sendMessage(Util.formatMessage("/maze join  - Join the MazeMania game"));
+				sender.sendMessage(Util.formatMessage("/maze leave - Leave the MazeMania game"));
+				sender.sendMessage(Util.formatMessage("/maze about - Show MazeMania credits and info"));
 			}
 			
 			if(args.length > 0){
 				if(args[0].equalsIgnoreCase("set")){
 					return setCommand.handle(sender, args);
-				} else if(args[0].equalsIgnoreCase("start")){
-					return arenaCommand.startHandle(sender, args);
+					
 				} else if(args[0].equalsIgnoreCase("join")){
-					return arenaCommand.joinHandle(sender, args);
+					if(!(sender instanceof Player)){
+						Util.sendMessageNotPlayer(sender);
+						return true;
+					}
+					return arenaCommand.joinHandle(player);
+					
 				} else if(args[0].equalsIgnoreCase("leave")){
-					return arenaCommand.leaveHandle(sender, args);
+					if(!(sender instanceof Player)){
+						Util.sendMessageNotPlayer(sender);
+						return true;
+					}
+					return arenaCommand.leaveHandle(player);
+					
 				} else if(args[0].equalsIgnoreCase("add")){
 					return setCommand.addHandle(sender, args);
+					
+				} else if(args[0].equalsIgnoreCase("about") || args[0].equalsIgnoreCase("info")){
+					sender.sendMessage(Util.formatMessage("---------------------- " + Util.pdfFile.getName() + " ----------------------"));
+					sender.sendMessage(Util.formatMessage(plugin.getName() + " developed by " + Util.pdfFile.getAuthors().get(0)));
+					sender.sendMessage(Util.formatMessage("To view more information visit http://plugmania.github.com/ (<-- You can click it!)"));
 				}
 			}
 			

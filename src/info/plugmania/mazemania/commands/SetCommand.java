@@ -11,8 +11,6 @@ import info.plugmania.mazemania.MazeMania;
 import info.plugmania.mazemania.Util;
 
 public class SetCommand {
-
-	public HashMap<Player, Location> selected = new HashMap<Player, Location>();
 	
 	MazeMania plugin;
 	public SetCommand(MazeMania instance) {
@@ -27,8 +25,12 @@ public class SetCommand {
 		Player player = (Player) sender;
 		
 		if(args.length <= 1){
-			sender.sendMessage(Util.formatMessage("Incorrect usage"));
-			//print out arena sub commands, user typed, /maze set
+			sender.sendMessage(Util.formatMessage("---------------------- MazeMania Setup ----------------------"));
+			sender.sendMessage(Util.formatMessage("Setup Commands:"));
+			sender.sendMessage(Util.formatMessage("/maze set [pos1|pos2]  - Set the arena boundaries"));
+			sender.sendMessage(Util.formatMessage("/maze set spawn        - Set the arena spawn (random spawns based on this)"));
+			sender.sendMessage(Util.formatMessage("/maze set exit         - Set the arena exit, the location you find to win"));
+			sender.sendMessage(Util.formatMessage("Items needed to win at exit are configurable!"));
 		}
 		
 		if(args.length > 1){
@@ -42,15 +44,15 @@ public class SetCommand {
 				plugin.arena.setPos2(loc);
 				player.sendMessage(Util.formatMessage("Arena position set."));
 				return true;
-			} else if(args[1].equalsIgnoreCase("lobby")){
-				Location loc = player.getLocation();
-				plugin.arena.setLobby(loc);
-				player.sendMessage(Util.formatMessage("Arena lobby position set."));
-				return true;
-			} else if(args[1].equalsIgnoreCase("spawn")){
+			}  else if(args[1].equalsIgnoreCase("spawn")){
 				Location loc = player.getLocation();
 				plugin.arena.setSpawn(loc);
 				player.sendMessage(Util.formatMessage("Arena spawn position set."));
+				return true;
+			} else if(args[1].equalsIgnoreCase("exit")){
+				Location loc = player.getLocation();
+				plugin.arena.setExit(loc);
+				player.sendMessage(Util.formatMessage("Arena exit position set."));
 				return true;
 			}
 			
@@ -72,18 +74,9 @@ public class SetCommand {
 		}
 		
 		if(args.length > 1){
-			if(args[1].equalsIgnoreCase("chest")){
-				Location loc = null;
-				if(selected.containsKey(player))
-					loc = selected.get(player);
-				if(loc == null){
-					player.sendMessage(Util.formatMessage("Select a block first with a magma cream."));
-					return true;
-				}
-				
-				player.sendMessage(Util.formatMessage("Position set. Debug - (Unimplemented)"));
-				return true;
-			}
+//			if(args[1].equalsIgnoreCase("")){
+//				
+//			}
 			
 		}
 		

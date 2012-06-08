@@ -1,10 +1,13 @@
 /*
  * TODO
- * Chests
- * Triggers, lightning (in essence a couple of effects)
- * Winning prizes/a way of winning
- * Mobs in arena
+ * Triggers: Mobs, lightning
  * Leaderboard/Scores
+ * 
+ * Modes: collect items: exit (defualt)
+ * Modes: find chest/block
+ * Pvp optional (optional) defualt on
+ * Join whenever (optional)
+ * Random spawns (optional) defualt on
  */
 
 package info.plugmania.mazemania;

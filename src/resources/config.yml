@@ -2,12 +2,16 @@
 #Version later to be used to maintain config
 version: 0.0.1
 
-#Choose lang, available: en
-lang: en
+#How long to wait for players to join in seconds
+waitingDelay: 20
 
-arena:
-  pos1:
-  pos2:
-  lobby:
-  spawn:
+#Minimum amount of players needed to join
+minimumPlayers: 1
+
+#Item to collect to win the maze, (must get to exit with the item)
+#The item name is from the Material type list in Bukkit
+itemToCollect: GOLD_NUGGET
+
+#The amount of the item above to collect
+itemAmountToCollect: 10
 
