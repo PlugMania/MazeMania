@@ -7,35 +7,35 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 public class Util {
-	
+
 	static MazeMania plugin;
-	
+
 	public static Logger log = Logger.getLogger("Minecraft");
 	public static PluginDescriptionFile pdfFile;
-	
-	public Util(MazeMania instance){
+
+	public Util(MazeMania instance) {
 		plugin = instance;
 	}
-	
-	public static String formatBroadcast(String msg){
+
+	public static String formatBroadcast(String msg) {
 		String s = ChatColor.BLUE.toString() + "[MazeMania] " + msg;
 		return s;
 	}
-		
-	public static String formatMessage(String msg){
+
+	public static String formatMessage(String msg) {
 		String s = ChatColor.DARK_PURPLE.toString() + ChatColor.ITALIC.toString() + msg;
 		return s;
 	}
-		
-	public static void log(String msg){
+
+	public static void log(String msg) {
 		log.info("[" + pdfFile.getName() + "] " + msg);
 	}
-		
-	public static void debug(String msg){
-		if(plugin.debug){
+
+	public static void debug(String msg) {
+		if (plugin.debug) {
 			log.info("[" + pdfFile.getName() + "] [DEBUG]: " + msg);
 		}
-	}	
+	}
 
 	public static void sendMessageNotPlayer(CommandSender sender) {
 		sender.sendMessage(ChatColor.RED + "You must be a player to do this!");

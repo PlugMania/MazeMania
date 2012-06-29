@@ -1,22 +1,8 @@
-<<<<<<< HEAD
 name: MazeMania
 author: PlugMania
 main: info.plugmania.mazemania.MazeMania
-<<<<<<< HEAD
-version: 1.0.0
-=======
-version: 0.0.2
->>>>>>> Untested, final BETA
-=======
-name: MazeMania
-author: PlugMania
-main: info.plugmania.mazemania.MazeMania
-<<<<<<< HEAD
-version: 0.0.2
->>>>>>> Final bug fixes, added triggers
-=======
-version: 1.0.0
->>>>>>> Official public release, 1.0.0
+version: 1.1.0
+softdepend: [Vault]
 description: MazeMania is a mix of arena, added a bit of mobarena and spiced with some sweet thinking of PlugMania devs.
 commands:
   maze:

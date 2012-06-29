@@ -1,7 +1,8 @@
 #Config
 #Version later to be used to maintain config
-version: 1.0.0
+version: 1.1.0
 
+############### GENERAL ##############
 #How long to wait for players to join in seconds
 waitingDelay: 20
 
@@ -15,6 +16,7 @@ noDamageDelay: 10
 #Minimum amount of players needed to join
 minimumPlayers: 2
 
+############### GAME TYPE ##############
 #The game mode type for the arena
 #Values: "collectItems", "findBlock"
 mode: "collectItems"
@@ -32,6 +34,22 @@ itemAmountToCollect: 10
 ###Used in mode "findBlock" only###
 blockMaterial: GOLD_BLOCK
 
+############### REWARDS ##############
+#Economy rewards (requires Vault)
+economy_rewards: true
+
+#Amount to reward
+economy_reward_amount: 20.0
+
+#Item Rewards
+item_rewards: true
+
+#Item names and amounts
+#ItemName:Amount
+item_reward_list:
+ - IRON_BLOCK:1
+
+############### OTHER ##############
 #Allow joining even when a game is in progress
 joinWhenever: true
 

@@ -10,13 +10,13 @@ import org.bukkit.inventory.ItemStack;
 public class PlayerStore {
 	public Inventory inv = null;
 	public ItemStack[] armour = null;
-	
+
 	public HashMap<Location, Inventory> chests = new HashMap<Location, Inventory>();
-	
+
 	public Location previousLoc = null;
-	
+
 	public GameMode gm;
-	
+
 	public int health;
 	public int hunger;
 }
