@@ -1,19 +1,13 @@
 /*
  * TODO
- * Triggers: Mobs, lightning
  * Leaderboard/Scores
- * 
- * Modes: collect items: exit (defualt)
- * Modes: find chest/block
- * Pvp optional (optional) defualt on
- * Join whenever (optional)
- * Random spawns (optional) defualt on
  */
 
 package info.plugmania.mazemania;
 
 import info.plugmania.mazemania.commands.MazeCommand;
 import info.plugmania.mazemania.helpers.Arena;
+import info.plugmania.mazemania.helpers.Triggers;
 import info.plugmania.mazemania.listeners.PlayerListener;
 
 import org.bukkit.Bukkit;
@@ -32,6 +26,7 @@ public class MazeMania extends JavaPlugin {
 	private final Util util;
 	
 	public Arena arena;
+	public Triggers triggers;
 	
 	public MazeMania() {	
         configUtil = new ConfigUtil(this);
@@ -55,6 +50,7 @@ public class MazeMania extends JavaPlugin {
 		mainConf = ConfigUtil.getConfig("config");
 		
         arena = new Arena(this); //load after config
+        triggers = new Triggers(this);
 		
 		debug = mainConf.getBoolean("debug", false);
 		

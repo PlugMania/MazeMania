@@ -3,10 +3,10 @@ package info.plugmania.mazemania.commands;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-
-import sun.swing.plaf.synth.Paint9Painter.PaintType;
 
 import info.plugmania.mazemania.MazeMania;
 import info.plugmania.mazemania.Util;
@@ -20,11 +20,17 @@ public class ArenaCommand {
 	}
 	
 	public int scheduleId;
+	public int scheduleMobId;
 	public boolean scheduleActive;
 	
 	public boolean joinHandle(Player player) {
 		if(plugin.arena.gameActive){
-			player.sendMessage(Util.formatMessage("The MazeMania game is currently in play, please wait."));
+			if(plugin.mainConf.getBoolean("joinWhenever")){
+				joinMatch(player);
+				player.sendMessage(Util.formatMessage("You have joined the MazeMania game!"));
+			} else {
+				player.sendMessage(Util.formatMessage("The MazeMania game is currently in play, please wait."));
+			}
 			return true;
 		}
 		
@@ -50,12 +56,12 @@ public class ArenaCommand {
 			}
 			return true;
 		} else if(plugin.arena.waiting.contains(player)) {
+			plugin.arena.waiting.remove(player);
+			player.sendMessage(Util.formatMessage("You are no longer on the MazeMania waiting list."));
 			if(plugin.arena.waiting.isEmpty() && scheduleActive){
 				Bukkit.getScheduler().cancelTask(scheduleId);
 				Bukkit.broadcastMessage(Util.formatBroadcast("MazeMania game cancelled, all waiting players left"));
 			}
-			plugin.arena.waiting.remove(player);
-			player.sendMessage(Util.formatMessage("You are no longer on the MazeMania waiting list."));
 			return true;
 		} else {
 			player.sendMessage(Util.formatMessage("You are not in the MazeMania game."));
@@ -67,6 +73,7 @@ public class ArenaCommand {
 		if(plugin.arena.playing.contains(player)){
 			
 			player.getInventory().clear();
+			player.setSneaking(false);
 			
 			Location back = null;
 			if(plugin.arena.store.containsKey(player)){
@@ -77,6 +84,7 @@ public class ArenaCommand {
 				player.setGameMode(ps.gm);
 				player.setFoodLevel(ps.hunger);
 				player.setHealth(ps.health);
+				player.getInventory().setArmorContents(ps.armour);
 			}
 			
 			if(back == null){
@@ -115,41 +123,83 @@ public class ArenaCommand {
 					startMatch();
 					return;
 				}
+
+				for(Entity e: spawn.getWorld().getEntities()){
+					if(!e.getType().equals(EntityType.ZOMBIE)) continue;
+					if(!plugin.arena.isInArena(e.getLocation())) continue;
+					e.remove();
+				}
+
 				plugin.arena.playing.clear();
 				plugin.arena.store.clear();
 				plugin.arena.gameActive = true;
 				scheduleActive = false;
 				for(Player p: plugin.arena.waiting){
-					
-					plugin.arena.store.put(p, new PlayerStore());
-					
-					Inventory inv = Bukkit.createInventory(null, p.getInventory().getSize());
-					inv.setContents(p.getInventory().getContents());
-					
-					PlayerStore ps = plugin.arena.store.get(p);
-					ps.inv = inv;
-					ps.gm = p.getGameMode();
-					ps.previousLoc = p.getLocation();
-					ps.health = p.getHealth();
-					ps.hunger = p.getFoodLevel();
-					
-					p.getInventory().clear();
-					
-					plugin.arena.playing.add(p);
-					
-					p.setHealth(p.getMaxHealth());
-					p.setFoodLevel(p.getMaxHealth());
-					p.setGameMode(GameMode.SURVIVAL);
-					
-					p.teleport(spawn);
+					joinMatch(p);
 				}
 				plugin.arena.waiting.clear();
 				Bukkit.broadcastMessage(Util.formatBroadcast("The MazeMania game has begun!"));
 			}
 			
 		}, tOut * 20L);
+
+		int mOut = plugin.mainConf.getInt("mobDelay", 7);
+		if(mOut < 1) mOut = 1;
+		scheduleMobId = Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
+
+			@Override
+			public void run() {
+				if(!plugin.arena.gameActive){
+					Bukkit.getScheduler().cancelTask(scheduleMobId);
+					return;
+				}
+				for(Player p : plugin.arena.playing){
+					Location l = plugin.arena.getRandomLocation(p.getLocation(), 5);
+					p.getWorld().spawnCreature(l, EntityType.ZOMBIE);
+				}
+			}
+			
+		}, mOut * 20L);
 	}
 	
-	
+	private void joinMatch(Player p){
+		plugin.arena.store.put(p, new PlayerStore());
+		
+		Inventory inv = Bukkit.createInventory(null, p.getInventory().getSize());
+		inv.setContents(p.getInventory().getContents());
+		
+		PlayerStore ps = plugin.arena.store.get(p);
+		ps.inv = inv;
+		ps.gm = p.getGameMode();
+		ps.previousLoc = p.getLocation();
+		ps.health = p.getHealth();
+		ps.hunger = p.getFoodLevel();
+		ps.armour = p.getInventory().getArmorContents();
+		
+		p.getInventory().clear();
+		p.getInventory().setArmorContents(null);
+		
+		plugin.arena.playing.add(p);
+		
+		p.setHealth(p.getMaxHealth());
+		p.setFoodLevel(p.getMaxHealth());
+		p.setGameMode(GameMode.SURVIVAL);
+		p.setSneaking(true);
+
+		if(plugin.mainConf.get("noDamageDelay") != null
+				&& plugin.mainConf.getInt("noDamageDelay", 0) != 0){
+			p.setNoDamageTicks(plugin.mainConf.getInt("noDamageDelay") * 20);
+		}
+
+		if(plugin.mainConf.getBoolean("randomSpawn", true)){
+			p.teleport(plugin.arena.getRandomSpawn());
+		} else {
+			Location spawn = plugin.arena.getSpawn();
+			if(spawn == null){
+				return;
+			}
+			p.teleport(spawn);
+		}
+	}
 
 }

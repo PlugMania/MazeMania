@@ -16,9 +16,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -27,7 +28,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 
 public class PlayerListener implements Listener {
@@ -53,14 +53,39 @@ public class PlayerListener implements Listener {
 	}
 	
 	@EventHandler
+	public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
+		if(event.getDamager() instanceof Player){
+			if(event.getEntity() instanceof Player){
+				if(!plugin.mainConf.getBoolean("allowPvP", true))
+					event.setCancelled(true);
+			}
+		}
+		
+		if(!(event.getEntity() instanceof Player)){ //is a mob
+			if(!plugin.arena.isInArena(event.getEntity().getLocation())) return; //return if not in arena
+			
+			if(!event.getCause().equals(DamageCause.ENTITY_ATTACK)) //make sure the damage was 'natural'
+				event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event){
 		Player player = event.getEntity();
 		if(!plugin.arena.playing.contains(player)) return;
 		
 		plugin.arena.playing.remove(player);
 		Bukkit.broadcastMessage(Util.formatBroadcast(player.getName() + " has died in the maze!"));
-		
-		if(plugin.arena.playing.isEmpty()){
+		if(plugin.arena.playing.size() == 1){
+			Player winner = plugin.arena.playing.get(0);
+			Bukkit.broadcastMessage(Util.formatBroadcast(winner.getName() + " is the last man standing and won the maze!"));
+			plugin.mazeCommand.arenaCommand.leaveMatch(winner);
+			//WIN
+			plugin.arena.store.remove(winner);
+			player.sendMessage(Util.formatMessage("Thank you for playing MazeMania."));
+			plugin.arena.playing.clear();
+			plugin.arena.gameActive = false;
+		} else if(plugin.arena.playing.isEmpty()){
 			plugin.arena.gameActive = false;
 			Bukkit.broadcastMessage(Util.formatBroadcast("The MazeMania game was forfeited, all players left!"));
 		}
@@ -72,8 +97,9 @@ public class PlayerListener implements Listener {
 		if(!plugin.arena.store.containsKey(player)) return;
 		
 		player.getInventory().clear();
+		player.setSneaking(false);
 		
-		Location back = null;
+		Location back;
 		PlayerStore ps = plugin.arena.store.get(player);
 			
 		player.getInventory().setContents(ps.inv.getContents());
@@ -81,6 +107,7 @@ public class PlayerListener implements Listener {
 		player.setGameMode(ps.gm);
 		player.setFoodLevel(ps.hunger);
 		player.setHealth(ps.health);
+		player.getInventory().setArmorContents(ps.armour);
 		
 		if(back == null){
 			player.sendMessage(Util.formatMessage("Your previous location was not found."));
@@ -129,6 +156,7 @@ public class PlayerListener implements Listener {
 				player.setGameMode(ps.gm);
 				player.setFoodLevel(ps.hunger);
 				player.setHealth(ps.health);
+				player.getInventory().setArmorContents(ps.armour);
 			}
 			
 			if(back == null){
@@ -177,12 +205,47 @@ public class PlayerListener implements Listener {
 	}
 	
 	@EventHandler
+	public void onPlayerInteract(PlayerInteractEvent event){
+		if(event.isCancelled()) return;
+		Player player = event.getPlayer();
+		if(!plugin.arena.playing.contains(player)) return;
+		
+		if(event.getAction().equals(Action.RIGHT_CLICK_AIR) 
+				|| event.getAction().equals(Action.LEFT_CLICK_AIR)) {
+			return;
+		}
+		Block block = event.getClickedBlock();
+		
+		Material matBlock = Material.getMaterial(plugin.mainConf.getString("blockMaterial", "GOLD_BLOCK"));
+		if(matBlock == null) matBlock = Material.GOLD_BLOCK;
+		
+		if(!block.getType().equals(matBlock)) return;
+		
+		//WIN
+		Bukkit.broadcastMessage(Util.formatBroadcast(player.getName() + " has won the maze!"));
+		for(Player p : plugin.arena.playing){
+			plugin.mazeCommand.arenaCommand.leaveMatch(p);
+			plugin.arena.store.remove(p);
+			p.sendMessage(Util.formatMessage("Thank you for playing MazeMania."));
+		}
+		plugin.arena.playing.clear();
+		plugin.arena.gameActive = false;
+		event.setCancelled(true);
+	}
+	
+	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event){
 		if(event.isCancelled()) return;
+		
+		if(!plugin.mainConf.getString("mode", "collectItems").equalsIgnoreCase("collectItems")) return;
+		
 		if(event.getFrom().getBlockX() != event.getTo().getBlockX()
 				|| event.getFrom().getBlockY() != event.getTo().getBlockY()
 				|| event.getFrom().getBlockZ() != event.getTo().getBlockZ()){
+			
 			if(!plugin.arena.playing.contains(event.getPlayer())) return;
+			
+			
 			if(event.getTo().getBlockX() == plugin.arena.getExit().getBlockX()
 					&& event.getTo().getBlockY() == plugin.arena.getExit().getBlockY()
 					&& event.getTo().getBlockZ() == plugin.arena.getExit().getBlockZ()){
@@ -194,7 +257,7 @@ public class PlayerListener implements Listener {
 				int amount = plugin.mainConf.getInt("itemAmountToCollect", 10);
 				if(amount < 1) amount = 1;
 				if(inv.contains(item, amount)){
-					
+					//WIN
 					Bukkit.broadcastMessage(Util.formatBroadcast(player.getName() + " has won the maze!"));
 					for(Player p : plugin.arena.playing){
 						plugin.mazeCommand.arenaCommand.leaveMatch(p);
@@ -208,6 +271,18 @@ public class PlayerListener implements Listener {
 					player.sendMessage(Util.formatMessage("You found the exit but have not collected enough items!"));
 				}
 			}
+		}
+	}
+	
+	@EventHandler
+	public void onTriggers(PlayerMoveEvent event){
+		if(event.getFrom().getBlockX() != event.getTo().getBlockX()
+				|| event.getFrom().getBlockY() != event.getTo().getBlockY()
+				|| event.getFrom().getBlockZ() != event.getTo().getBlockZ()){
+			
+			if(!plugin.arena.playing.contains(event.getPlayer())) return;
+
+			plugin.triggers.handle(event.getTo().getBlock().getLocation(), event.getPlayer());
 		}
 	}
 	

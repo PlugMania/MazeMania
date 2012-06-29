@@ -18,12 +18,12 @@ public class Util {
 	}
 	
 	public static String formatBroadcast(String msg){
-		String s = msg;
+		String s = ChatColor.BLUE.toString() + "[MazeMania] " + msg;
 		return s;
 	}
 		
 	public static String formatMessage(String msg){
-		String s = ChatColor.BLUE + msg;
+		String s = ChatColor.DARK_PURPLE.toString() + ChatColor.ITALIC.toString() + msg;
 		return s;
 	}
 		

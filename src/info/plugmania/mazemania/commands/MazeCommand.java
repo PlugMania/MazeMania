@@ -30,7 +30,7 @@ public class MazeCommand implements CommandExecutor {
 				player = (Player) sender;
 			
 			if(args.length == 0){
-				sender.sendMessage(Util.formatMessage("---------------------- MazeMania Help ----------------------"));
+				sender.sendMessage(Util.formatMessage("---------------- MazeMania Help -----------------"));
 				sender.sendMessage(Util.formatMessage("Player Commands:"));
 				sender.sendMessage(Util.formatMessage("/maze join  - Join the MazeMania game"));
 				sender.sendMessage(Util.formatMessage("/maze leave - Leave the MazeMania game"));
@@ -39,11 +39,23 @@ public class MazeCommand implements CommandExecutor {
 			
 			if(args.length > 0){
 				if(args[0].equalsIgnoreCase("set")){
+					if(!(sender instanceof Player)){
+						Util.sendMessageNotPlayer(sender);
+						return true;
+					}
+					if(!plugin.hasPermission(player, "admin")){
+						Util.sendMessageNoPerms(player);
+						return true;
+					}
 					return setCommand.handle(sender, args);
 					
 				} else if(args[0].equalsIgnoreCase("join")){
 					if(!(sender instanceof Player)){
 						Util.sendMessageNotPlayer(sender);
+						return true;
+					}
+					if(!plugin.hasPermission(player, "use")){
+						Util.sendMessageNoPerms(player);
 						return true;
 					}
 					return arenaCommand.joinHandle(player);
@@ -53,10 +65,18 @@ public class MazeCommand implements CommandExecutor {
 						Util.sendMessageNotPlayer(sender);
 						return true;
 					}
+					if(!plugin.hasPermission(player, "use")){
+						Util.sendMessageNoPerms(player);
+						return true;
+					}
 					return arenaCommand.leaveHandle(player);
 					
-				} else if(args[0].equalsIgnoreCase("add")){
-					return setCommand.addHandle(sender, args);
+				} else if(args[0].equalsIgnoreCase("trigger")){
+					if(!plugin.hasPermission(player, "admin")){
+						Util.sendMessageNoPerms(player);
+						return true;
+					}
+					return setCommand.triggerHandle(sender, args);
 					
 				} else if(args[0].equalsIgnoreCase("about") || args[0].equalsIgnoreCase("info")){
 					sender.sendMessage(Util.formatMessage("---------------------- " + Util.pdfFile.getName() + " ----------------------"));

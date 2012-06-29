@@ -1,9 +1,34 @@
+<<<<<<< HEAD
 name: MazeMania
 author: PlugMania
 main: info.plugmania.mazemania.MazeMania
+<<<<<<< HEAD
 version: 1.0.0
+=======
+version: 0.0.2
+>>>>>>> Untested, final BETA
+=======
+name: MazeMania
+author: PlugMania
+main: info.plugmania.mazemania.MazeMania
+<<<<<<< HEAD
+version: 0.0.2
+>>>>>>> Final bug fixes, added triggers
+=======
+version: 1.0.0
+>>>>>>> Official public release, 1.0.0
 description: MazeMania is a mix of arena, added a bit of mobarena and spiced with some sweet thinking of PlugMania devs.
 commands:
   maze:
     usage: /maze
     description: Root command
+permissions:
+    mazemania.*:
+        description: Allows you to use all the commands
+        default: op
+    mazemania.admin:
+        description: Allows the user to setup the maze
+        default: op
+    mazemania.use:
+        description: Allows anyone to use the maze
+        default: true

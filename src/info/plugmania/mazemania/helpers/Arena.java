@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import info.plugmania.mazemania.ConfigUtil;
@@ -26,15 +27,20 @@ public class Arena {
 	private Location higherPos;
 	private Location lowerPos;
 	
+	public YamlConfiguration dbConf;
+	
 	MazeMania plugin;
 	public Arena(MazeMania instance) {
 		plugin = instance;
+		
+		ConfigUtil.loadConfig("db");
+		dbConf = ConfigUtil.getConfig("db");
 		
 		updatePosLocs();
 	}
 	
 	private void updatePosLocs(){
-		String pos1 = plugin.mainConf.getString("arena.pos1");
+		String pos1 = dbConf.getString("arena.pos1");
 		if(pos1 == null) return;
 		String[] pos1Ar = pos1.split(":");
 		World pos1w = Bukkit.getWorld(pos1Ar[0]);
@@ -44,7 +50,7 @@ public class Arena {
 		if(pos1w == null) return;
 		pos1Loc = new Location(pos1w, Integer.parseInt(pos1Ar[1]), Integer.parseInt(pos1Ar[2]), Integer.parseInt(pos1Ar[3]));
 		
-		String pos2 = plugin.mainConf.getString("arena.pos2");
+		String pos2 = dbConf.getString("arena.pos2");
 		if(pos2 == null) return;
 		String[] pos2Ar = pos2.split(":");
 		World pos2w = Bukkit.getWorld(pos1Ar[0]);
@@ -88,8 +94,8 @@ public class Arena {
 		int blockX = loc.getBlockX();
 		int blockY = loc.getBlockY();
 		int blockZ = loc.getBlockZ();
-		plugin.mainConf.set("arena.pos1", loc.getWorld().getName() + ":" + blockX + ":" + blockY + ":" + blockZ);
-		ConfigUtil.saveConfig(plugin.mainConf, "config");
+		dbConf.set("arena.pos1", loc.getWorld().getName() + ":" + blockX + ":" + blockY + ":" + blockZ);
+		ConfigUtil.saveConfig(dbConf, "db");
 		updatePosLocs();
 	}
 	
@@ -97,8 +103,8 @@ public class Arena {
 		int blockX = loc.getBlockX();
 		int blockY = loc.getBlockY();
 		int blockZ = loc.getBlockZ();
-		plugin.mainConf.set("arena.pos2", loc.getWorld().getName() + ":" + blockX + ":" + blockY + ":" + blockZ);
-		ConfigUtil.saveConfig(plugin.mainConf, "config");
+		dbConf.set("arena.pos2", loc.getWorld().getName() + ":" + blockX + ":" + blockY + ":" + blockZ);
+		ConfigUtil.saveConfig(dbConf, "db");
 		updatePosLocs();
 	}
 	
@@ -106,22 +112,23 @@ public class Arena {
 		int blockX = loc.getBlockX();
 		int blockY = loc.getBlockY();
 		int blockZ = loc.getBlockZ();
-		plugin.mainConf.set("arena.spawn", loc.getWorld().getName() + ":" + blockX + ":" + blockY + ":" + blockZ);
-		ConfigUtil.saveConfig(plugin.mainConf, "config");
+		dbConf.set("arena.spawn", loc.getWorld().getName() + ":" + blockX + ":" + blockY + ":" + blockZ);
+		ConfigUtil.saveConfig(dbConf, "db");
 	}
 	
 	public void setExit(Location loc){
 		int blockX = loc.getBlockX();
 		int blockY = loc.getBlockY();
 		int blockZ = loc.getBlockZ();
-		plugin.mainConf.set("arena.exit", loc.getWorld().getName() + ":" + blockX + ":" + blockY + ":" + blockZ);
-		ConfigUtil.saveConfig(plugin.mainConf, "config");
+		dbConf.set("arena.exit", loc.getWorld().getName() + ":" + blockX + ":" + blockY + ":" + blockZ);
+		ConfigUtil.saveConfig(dbConf, "db");
 	}
 	
 	public boolean isInArena(Location loc){
 		int x = loc.getBlockX();
 		int y = loc.getBlockY();
 		int z = loc.getBlockZ();
+		if(lowerPos == null || higherPos == null) return false;
 		if(x >= lowerPos.getBlockX() && x <= higherPos.getBlockX()
 				&& y >= lowerPos.getBlockY() && y <= higherPos.getBlockY()
 				&& z >= lowerPos.getBlockZ() && z <= higherPos.getBlockZ()){
@@ -141,19 +148,51 @@ public class Arena {
 	public Location getRandomSpawn(){
 		Location s = getSpawn();
 		int d = 10;
-		Block b = null;
-		while(b != null && !b.getType().equals(Material.AIR) && !b.getRelative(BlockFace.UP).getType().equals(Material.AIR)){
-			double dist = Math.random() * (2 * d);
-			long deg = Math.round(Math.random() * 360);
-			double x = s.getBlockX() + (dist - d) * Math.cos(deg);
-			double z = s.getBlockZ() + (dist - d) * Math.cos(deg);
+		double dist;
+		long deg;
+		double x, z;
+		Block b;
+		boolean finish = false;;
+		do {
+			dist = Math.random() * d;
+			deg = Math.round(Math.random() * 360);
+			x = s.getBlockX() + (dist - d) * Math.cos(deg);
+			z = s.getBlockZ() + (dist - d) * Math.cos(deg);
 			b = s.getWorld().getBlockAt((int) x, s.getBlockY(), (int) z);
-		}
-		return b.getLocation();
+			if(b.getType().equals(Material.AIR) 
+					&& b.getRelative(BlockFace.UP).getType().equals(Material.AIR) 
+					&& isInArena(b.getLocation()) ){
+					finish = true;
+			}
+		} while (!finish);
+		
+		return b.getLocation().add(0.5, 0, 0.5);
+	}
+	
+	public Location getRandomLocation(Location s, int d){
+		double dist;
+		long deg;
+		double x, z;
+		Block b;
+		boolean finish = false;;
+		do {
+			dist = Math.random() * d;
+			deg = Math.round(Math.random() * 360);
+			x = s.getBlockX() + (dist - d) * Math.cos(deg);
+			z = s.getBlockZ() + (dist - d) * Math.cos(deg);
+			b = s.getWorld().getBlockAt((int) x, s.getBlockY(), (int) z);
+			if(b.getType().equals(Material.AIR) 
+					&& b.getRelative(BlockFace.UP).getType().equals(Material.AIR) 
+					&& isInArena(b.getLocation()) ){
+					finish = true;
+			}
+		} while (!finish);
+		
+		return b.getLocation().add(0.5, 0, 0.5);
 	}
 
 	public Location getSpawn(){
-		String spawn = plugin.mainConf.getString("arena.spawn");
+		String spawn = dbConf.getString("arena.spawn");
 		String[] spawnAr = spawn.split(":");
 		World spawnW = Bukkit.getWorld(spawnAr[0]);
 		
@@ -163,7 +202,7 @@ public class Arena {
 	}
 	
 	public Location getExit(){
-		String exit = plugin.mainConf.getString("arena.exit");
+		String exit = dbConf.getString("arena.exit");
 		String[] exitAr = exit.split(":");
 		World exitW = Bukkit.getWorld(exitAr[0]);
 		
