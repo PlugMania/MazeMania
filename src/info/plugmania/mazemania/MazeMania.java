@@ -27,7 +27,7 @@ public class MazeMania extends JavaPlugin {
 	private final ConfigUtil configUtil;
 	private final Util util;
 
-	private String confVersion = "1.1.0";
+	private String confVersion = "1.2.0";
 
 	public Arena arena;
 	public Triggers triggers;

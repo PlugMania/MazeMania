@@ -1,6 +1,6 @@
 #Config
 #Version later to be used to maintain config
-version: 1.1.0
+version: 1.2.0
 
 ############### GENERAL ##############
 #How long to wait for players to join in seconds
