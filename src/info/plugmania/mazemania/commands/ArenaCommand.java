@@ -25,8 +25,18 @@ public class ArenaCommand {
 	public boolean scheduleActive;
 
 	public boolean joinHandle(Player player) {
+
+		if(plugin.mainConf.getInt("maximumPlayers", 0) != 0 && plugin.arena.waiting.size() >= plugin.mainConf.getInt("maximumPlayers", 0)){
+			player.sendMessage(Util.formatMessage("Only " + plugin.mainConf.getInt("maximumPlayers", 0) + " players allowed at a time."));
+			return true;
+		}
+
 		if (plugin.arena.gameActive) {
 			if (plugin.mainConf.getBoolean("joinWhenever")) {
+				if(plugin.mainConf.getInt("maximumPlayers", 0) != 0 && plugin.arena.playing.size() >= plugin.mainConf.getInt("maximumPlayers", 0)){
+					player.sendMessage(Util.formatMessage("Only " + plugin.mainConf.getInt("maximumPlayers", 0) + " players allowed at a time."));
+					return true;
+				}
 				joinMatch(player);
 				player.sendMessage(Util.formatMessage("You have joined the MazeMania game!"));
 			} else {

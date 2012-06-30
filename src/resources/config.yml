@@ -16,6 +16,9 @@ noDamageDelay: 10
 #Minimum amount of players needed to join
 minimumPlayers: 2
 
+#Maximum amount of players allowed, 0 for no limit
+maximumPlayers: 0
+
 ############### GAME TYPE ##############
 #The game mode type for the arena
 #Values: "collectItems", "findBlock"
