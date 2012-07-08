@@ -1,5 +1,9 @@
 package info.plugmania.mazemania;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
@@ -57,5 +61,30 @@ public class Util {
 		}
 		sender.sendMessage(ChatColor.RED + "You do not have permission to do that!");
 		return false;
+	}
+	
+	public String join(String[] a, String delimiter, Integer startIndex) {
+		try {
+			Collection<String> s = Arrays.asList(a);
+			StringBuffer buffer = new StringBuffer();
+			Iterator<String> iter = s.iterator();
+
+			while (iter.hasNext()) {
+				if (startIndex == 0) {
+					buffer.append(iter.next());
+					if (iter.hasNext()) {
+						buffer.append(delimiter);
+					}
+				} else {
+					startIndex--;
+					iter.next();
+				}
+			}
+
+			return buffer.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
 	}
 }

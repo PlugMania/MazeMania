@@ -212,5 +212,6 @@ public class ArenaCommand {
 			p.teleport(spawn);
 		}
 	}
+	
 
 }

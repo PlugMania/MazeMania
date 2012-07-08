@@ -5,6 +5,7 @@ import info.plugmania.mazemania.helpers.Arena;
 import info.plugmania.mazemania.helpers.Econ;
 import info.plugmania.mazemania.helpers.Reward;
 import info.plugmania.mazemania.helpers.Triggers;
+import info.plugmania.mazemania.helpers.TriggerManager;
 import info.plugmania.mazemania.listeners.PlayerListener;
 
 import java.io.File;
@@ -35,10 +36,11 @@ public class MazeMania extends JavaPlugin {
 	public Econ econ = null;
 
 	public MazeCommand mazeCommand;
-
+public TriggerManager TriggerManager;
 	public MazeMania() {
 		this.configUtil = new ConfigUtil(this);
 		this.util = new Util(this);
+		this.TriggerManager=new TriggerManager(this);
 	}
 
 	public void onDisable() {

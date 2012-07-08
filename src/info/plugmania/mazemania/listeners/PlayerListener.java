@@ -287,7 +287,12 @@ public class PlayerListener implements Listener {
 				|| event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
 
 			if (!plugin.arena.playing.contains(event.getPlayer())) return;
-
+			Location loc=new Location(event.getPlayer().getWorld(),
+					event.getPlayer().getLocation().getBlockX(),
+					event.getPlayer().getLocation().getBlockY()-1,
+					event.getPlayer().getLocation().getBlockZ());
+if(plugin.TriggerManager.isATrigger(event.getPlayer().getWorld().getBlockAt(loc).getType()))
+	plugin.TriggerManager.getTrigger(event.getPlayer().getWorld().getBlockAt(loc).getType()).apply(event.getPlayer());
 			plugin.triggers.handle(event.getTo().getBlock().getLocation(), event.getPlayer());
 		}
 	}

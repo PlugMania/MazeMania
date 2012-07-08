@@ -2,7 +2,9 @@ package info.plugmania.mazemania.commands;
 
 import info.plugmania.mazemania.MazeMania;
 import info.plugmania.mazemania.Util;
+import info.plugmania.mazemania.helpers.Trigger;
 
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -67,9 +69,25 @@ public class MazeCommand implements CommandExecutor {
 					if (!plugin.util.hasPermMsg(player, "admin")) return true;
 					return setCommand.triggerHandle(sender, args);
 					
-				} else if (args[0].equalsIgnoreCase("triggerblock")) {
+				} else if (args[0].equalsIgnoreCase("block")) {
 					if (!plugin.util.hasPermMsg(player, "admin")) return true;
-					
+					if(args.length==1){
+						sender.sendMessage("========================");
+						sender.sendMessage("Block   Event   Args");
+						for (Trigger t:plugin.TriggerManager.getTriggers()){
+				
+							sender.sendMessage(t.blockID.toString() + " " + t.effect + " " + t.arguments);
+						}
+						sender.sendMessage("=========================");
+					}else if(args.length==2){
+						plugin.TriggerManager.removeTrigger(Material.getMaterial(args[1]));
+					}else if(args.length==3){
+						plugin.TriggerManager.addTrigger(new Trigger(Material.getMaterial(args[1]), args[2], ""));
+					}else if(args.length>=4){
+						plugin.TriggerManager.addTrigger(new Trigger(Material.getMaterial(args[1]), args[2], plugin.util.join(args, " ", 3)));
+					}else{
+						
+					}
 				} else if (args[0].equalsIgnoreCase("about") || args[0].equalsIgnoreCase("info")) {
 					sender.sendMessage(Util.formatMessage("---------------------- " + Util.pdfFile.getName() + " ----------------------"));
 					sender.sendMessage(Util.formatMessage(plugin.getName() + " developed by " + Util.pdfFile.getAuthors().get(0)));
