@@ -44,10 +44,7 @@ public class MazeCommand implements CommandExecutor {
 						Util.sendMessageNotPlayer(sender);
 						return true;
 					}
-					if (!plugin.hasPermission(player, "admin")) {
-						Util.sendMessageNoPerms(player);
-						return true;
-					}
+					if (!plugin.util.hasPermMsg(player, "admin")) return true;
 					return setCommand.handle(sender, args);
 
 				} else if (args[0].equalsIgnoreCase("join")) {
@@ -55,10 +52,7 @@ public class MazeCommand implements CommandExecutor {
 						Util.sendMessageNotPlayer(sender);
 						return true;
 					}
-					if (!plugin.hasPermission(player, "use")) {
-						Util.sendMessageNoPerms(player);
-						return true;
-					}
+					if (!plugin.util.hasPermMsg(player, "use")) return true;
 					return arenaCommand.joinHandle(player);
 
 				} else if (args[0].equalsIgnoreCase("leave")) {
@@ -66,19 +60,16 @@ public class MazeCommand implements CommandExecutor {
 						Util.sendMessageNotPlayer(sender);
 						return true;
 					}
-					if (!plugin.hasPermission(player, "use")) {
-						Util.sendMessageNoPerms(player);
-						return true;
-					}
+					if (!plugin.util.hasPermMsg(player, "use")) return true;
 					return arenaCommand.leaveHandle(player);
 
 				} else if (args[0].equalsIgnoreCase("trigger")) {
-					if (!plugin.hasPermission(player, "admin")) {
-						Util.sendMessageNoPerms(player);
-						return true;
-					}
+					if (!plugin.util.hasPermMsg(player, "admin")) return true;
 					return setCommand.triggerHandle(sender, args);
-
+					
+				} else if (args[0].equalsIgnoreCase("triggerblock")) {
+					if (!plugin.util.hasPermMsg(player, "admin")) return true;
+					
 				} else if (args[0].equalsIgnoreCase("about") || args[0].equalsIgnoreCase("info")) {
 					sender.sendMessage(Util.formatMessage("---------------------- " + Util.pdfFile.getName() + " ----------------------"));
 					sender.sendMessage(Util.formatMessage(plugin.getName() + " developed by " + Util.pdfFile.getAuthors().get(0)));

@@ -48,4 +48,14 @@ public class Util {
 	public static void sendMessagePlayerNotOnline(CommandSender sender) {
 		sender.sendMessage(ChatColor.RED + "That player is not online!");
 	}
+	
+	public boolean hasPermMsg(CommandSender sender,String perm){
+		
+		if ((sender.hasPermission(plugin.basePerm + "." + perm)) || (sender.hasPermission(plugin.basePerm + ".*"))) {
+			Util.debug("Has permission for player: " + sender.getName() + " and perm: " + plugin.basePerm + "." + perm);
+			return true;
+		}
+		sender.sendMessage(ChatColor.RED + "You do not have permission to do that!");
+		return false;
+	}
 }

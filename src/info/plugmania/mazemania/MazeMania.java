@@ -25,7 +25,7 @@ public class MazeMania extends JavaPlugin {
 	public boolean debug = false;
 
 	private final ConfigUtil configUtil;
-	private final Util util;
+	public final Util util;
 
 	private String confVersion = "1.2.0";
 
@@ -93,7 +93,7 @@ public class MazeMania extends JavaPlugin {
 		return hasPermission(player, perm);
 	}
 
-	private String basePerm = "mazemania";
+	public String basePerm = "mazemania";
 
 	public boolean hasPermission(Player player, String perm) {
 		if ((player.hasPermission(basePerm + "." + perm)) || (player.hasPermission(this.basePerm + ".*"))) {
