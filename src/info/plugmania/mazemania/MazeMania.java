@@ -36,11 +36,12 @@ public class MazeMania extends JavaPlugin {
 	public Econ econ = null;
 
 	public MazeCommand mazeCommand;
-public TriggerManager TriggerManager;
+	public TriggerManager TriggerManager;
+
 	public MazeMania() {
 		this.configUtil = new ConfigUtil(this);
 		this.util = new Util(this);
-		this.TriggerManager=new TriggerManager(this);
+		this.TriggerManager= new TriggerManager(this);
 	}
 
 	public void onDisable() {

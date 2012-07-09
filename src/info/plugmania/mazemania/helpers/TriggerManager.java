@@ -35,7 +35,7 @@ public class TriggerManager {
 		}
 	}
 	
-	public boolean isATrigger(Material block){
+	public boolean isTrigger(Material block){
 		for(Trigger t:triggerList){
 			if(t.blockID==block){
 				return true;

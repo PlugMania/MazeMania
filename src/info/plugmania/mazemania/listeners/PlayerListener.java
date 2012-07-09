@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -287,13 +288,12 @@ public class PlayerListener implements Listener {
 				|| event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
 
 			if (!plugin.arena.playing.contains(event.getPlayer())) return;
-			Location loc=new Location(event.getPlayer().getWorld(),
-					event.getPlayer().getLocation().getBlockX(),
-					event.getPlayer().getLocation().getBlockY()-1,
-					event.getPlayer().getLocation().getBlockZ());
-if(plugin.TriggerManager.isATrigger(event.getPlayer().getWorld().getBlockAt(loc).getType()))
-	plugin.TriggerManager.getTrigger(event.getPlayer().getWorld().getBlockAt(loc).getType()).apply(event.getPlayer());
+
 			plugin.triggers.handle(event.getTo().getBlock().getLocation(), event.getPlayer());
+
+			Block b= event.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN);
+			if(plugin.TriggerManager.isTrigger(b.getType()))
+				plugin.TriggerManager.getTrigger(b.getType()).apply(event.getPlayer());
 		}
 	}
 
