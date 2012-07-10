@@ -67,7 +67,10 @@ public class ConfigUtil {
 				InputStream templateIn = plugin.getResource("resources" + File.separator + templateName + ".yml");
 				OutputStream outStream = new FileOutputStream(file);
 
-				byte[] bytes = new byte[1024];
+                                // DEBUG TEST
+                                Util.debug("templateIn: " + templateIn);
+                                // DONE
+                                byte[] bytes = new byte[1024];
 				int read = templateIn.read(bytes);
 
 //				while ((read = templateIn.read(bytes)) != -1) {
