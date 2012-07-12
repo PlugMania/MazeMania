@@ -1,7 +1,7 @@
 name: MazeMania
 author: PlugMania
 main: info.plugmania.mazemania.MazeMania
-version: 1.2.0
+version: 1.2.0.1
 softdepend: [Vault]
 description: MazeMania is a mix of arena, added a bit of mobarena and spiced with some sweet thinking of PlugMania devs.
 commands:

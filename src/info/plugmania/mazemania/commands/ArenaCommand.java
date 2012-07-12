@@ -7,6 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import info.plugmania.mazemania.MazeMania;
 import info.plugmania.mazemania.Util;
@@ -196,6 +197,9 @@ public class ArenaCommand {
 		p.setFoodLevel(p.getMaxHealth());
 		p.setGameMode(GameMode.SURVIVAL);
 		p.setSneaking(true);
+		for(Short i:plugin.mainConf.getShortList("startingItems")){
+		p.getInventory().addItem(new ItemStack(i));
+		}
 
 		if (plugin.mainConf.get("noDamageDelay") != null
 				&& plugin.mainConf.getInt("noDamageDelay", 0) != 0) {
