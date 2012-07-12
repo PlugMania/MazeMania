@@ -209,8 +209,7 @@ public class Arena {
 		String[] exitAr = exit.split(":");
 		World exitW = Bukkit.getWorld(exitAr[0]);
 
-		if (exitAr.length != 4) return null;
-		if (exitAr == null) return null;
+		if (exitAr.length != 4) return new Location(plugin.getServer().getWorlds().get(0),0,0,0);
 		return new Location(exitW, Integer.parseInt(exitAr[1]), Integer.parseInt(exitAr[2]), Integer.parseInt(exitAr[3]));
 	}
 }
