@@ -290,8 +290,8 @@ public class PlayerListener implements Listener {
 			if (!plugin.arena.playing.contains(event.getPlayer())) return;
 
 			plugin.triggers.handle(event.getTo().getBlock().getLocation(), event.getPlayer());
-
 			Block b= event.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN);
+			if(plugin.TriggerManager.isTrigger(b.getType())) event.getPlayer().sendMessage("Trigger."); else event.getPlayer().sendMessage("Not trigger.");
 			if(plugin.TriggerManager.isTrigger(b.getType()))
 				plugin.TriggerManager.getTrigger(b.getType()).apply(event.getPlayer());
 		}
