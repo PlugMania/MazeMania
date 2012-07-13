@@ -44,33 +44,33 @@ public class Trigger {
 		}
 	}
 
-	@effect void poison(Player p,String args){
+	@effect public void poison(Player p,String args){
 		p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 4 * 20, 1));
 	}
 
-	@effect void lightning(Player p,String args){
+	@effect public void lightning(Player p,String args){
 		p.getLocation().getWorld().strikeLightningEffect(p.getLocation());
 		p.addPotionEffect(new PotionEffect(PotionEffectType.HARM, 5, 1));
 	}
 
-	@effect(argument="4") void fire(Player p,String args){
+	@effect(argument="4") public void fire(Player p,String args){
 		p.setFireTicks(Integer.parseInt(args) * 20);
 	}
 
-	@effect(argument="2") void damage(Player p,String args){
+	@effect(argument="2") public void damage(Player p,String args){
 		p.damage(Integer.parseInt(args));
 	}
 
-	@effect(argument="2") void heal(Player p,String args){
+	@effect(argument="2") public void heal(Player p,String args){
 		p.setHealth(p.getHealth()+Integer.parseInt(args));
 	}
 
-	@effect void kill(Player p,String args){
+	@effect public void kill(Player p,String args){
 		//a bit over the top?
 	}
 
 
-	@interface effect{
+	public @interface effect{
 		  String argument() default "";
 	}
 }
