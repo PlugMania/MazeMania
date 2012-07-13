@@ -22,11 +22,16 @@ public class Trigger {
 
 
 	public void apply(Player p){
+		System.out.println("applying effect: '" + effect + " " + arguments + "'");
 		try {
 			for(Method m : this.getClass().getMethods()) {
+				System.out.println("method loop");
 				if(m.getName().equalsIgnoreCase(effect)) {
+					System.out.println("m=effect");
 					for(Annotation a:m.getAnnotations()) {
+						System.out.println("annotation loop");
 						if(a instanceof effect){
+							System.out.println("matched.");
 							if(arguments==null) arguments=((effect) a).argument();
 							m.invoke(this, new Object[]{p,arguments});
 						}
