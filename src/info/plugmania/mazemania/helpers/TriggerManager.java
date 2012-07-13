@@ -20,7 +20,7 @@ public class TriggerManager {
 	
 	public Trigger getTrigger(Material block){
 		for(Trigger t:triggerList){
-			if(t.blockID==block){
+			if(t.blockID.getId()==block.getId()){
 				return t;
 			}
 		}
@@ -29,7 +29,7 @@ public class TriggerManager {
 	
 	public void removeTrigger(Material block){
 		for(Trigger t:triggerList){
-			if(t.blockID==block){
+			if(t.blockID.getId()==block.getId()){
 				triggerList.remove(t);
 			}
 		}
@@ -37,7 +37,7 @@ public class TriggerManager {
 	
 	public boolean isTrigger(Material block){
 		for(Trigger t:triggerList){
-			if(t.blockID==block){
+			if(t.blockID.getId()==block.getId()){
 				return true;
 			}
 		}
