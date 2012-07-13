@@ -14,8 +14,8 @@ public class Trigger {
 	public String effect;
 	public String arguments;
 
-	public Trigger(Material ID, String e,String args){
-		blockID=ID.getId();
+	public Trigger(int ID, String e,String args){
+		blockID=ID;
 		effect=e;
 		arguments=args;
 	}
