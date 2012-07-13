@@ -10,12 +10,12 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class Trigger {
-	public Material blockID;
+	public int blockID;
 	public String effect;
 	public String arguments;
 
 	public Trigger(Material ID, String e,String args){
-		blockID=ID;
+		blockID=ID.getId();
 		effect=e;
 		arguments=args;
 	}

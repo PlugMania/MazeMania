@@ -76,7 +76,7 @@ public class MazeCommand implements CommandExecutor {
 						sender.sendMessage("Block   Event   Args");
 						for (Trigger t:plugin.TriggerManager.getTriggers()){
 				
-							sender.sendMessage(t.blockID.toString() + " " + t.effect + " " + t.arguments);
+							sender.sendMessage(Material.getMaterial(t.blockID).name() + " " + t.effect + " " + t.arguments);
 						}
 						sender.sendMessage("=========================");
 					}else if(args.length==2){
