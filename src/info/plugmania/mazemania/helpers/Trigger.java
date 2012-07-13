@@ -27,7 +27,7 @@ public class Trigger {
 			for(Method m : this.getClass().getMethods()) {
 				System.out.println("method loop " + m.getName());
 				if(m.getName().equalsIgnoreCase(effect)) {
-					System.out.println("m=effect");
+					System.out.println("m=effect " + m.getAnnotations().length);
 					for(Annotation a:m.getAnnotations()) {
 						System.out.println("annotation loop");
 						if(a instanceof effect){
