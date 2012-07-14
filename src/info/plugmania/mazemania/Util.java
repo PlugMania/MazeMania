@@ -21,11 +21,13 @@ package info.plugmania.mazemania;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 public class Util {
@@ -104,5 +106,43 @@ public class Util {
 			e.printStackTrace();
 			return "";
 		}
+	}
+	
+	public HashMap<String,String> getFlags(String string){
+		HashMap<String,String> ret=new HashMap<String,String>();
+		boolean inQuotes=false;
+		boolean inFlag=true;
+		String currentflag="";
+		String flagvalue="";
+		for(char c:string.toCharArray()){
+			if(c=='\''){
+				inQuotes=!inQuotes;
+			}else if(c==' '&&!inQuotes){
+				ret.put(currentflag, flagvalue);
+                currentflag = "";
+                flagvalue = "";
+				inFlag=true;
+			}else if(c==':'&&!inQuotes){
+				inFlag=false;
+			}else if(inFlag){
+				currentflag+=c;
+			}else if(inQuotes){
+				flagvalue+=c;
+			}else if(!inFlag){
+				flagvalue+=c;
+			}
+			
+		}
+		ret.put(currentflag, flagvalue);
+		return ret;
+		}
+	
+	
+	public boolean compare(HashMap<String,String> event,HashMap<String,String> entry){
+		for(String s:entry.keySet()){
+			if(!event.containsKey(s)) return false;
+			if((event.get(s)!=entry.get(s))&&(entry.get(s)!="*")) return false;
+		}
+		return true;
 	}
 }
