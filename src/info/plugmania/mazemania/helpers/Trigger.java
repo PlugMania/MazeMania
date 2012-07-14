@@ -19,6 +19,8 @@
 package info.plugmania.mazemania.helpers;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Method;
 
 import info.plugmania.mazemania.Util;
@@ -88,7 +90,7 @@ public class Trigger {
 	}
 
 
-	public @interface effect{
+	@Retention(RetentionPolicy.RUNTIME) @interface effect{
 		  String argument() default "";
 	}
 }
