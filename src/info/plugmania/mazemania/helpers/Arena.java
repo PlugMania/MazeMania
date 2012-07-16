@@ -218,7 +218,6 @@ public class Arena {
 		World spawnW = Bukkit.getWorld(spawnAr[0]);
 
 		if (spawnAr.length != 4) return null;
-		if (spawnAr == null) return null;
 		return new Location(spawnW, Integer.parseInt(spawnAr[1]), Integer.parseInt(spawnAr[2]), Integer.parseInt(spawnAr[3]));
 	}
 

@@ -21,9 +21,7 @@ package info.plugmania.mazemania.helpers;
 import info.plugmania.mazemania.MazeMania;
 import info.plugmania.mazemania.Util;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Server;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.ServicesManager;
 
 public class Econ {
 

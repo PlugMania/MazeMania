@@ -27,14 +27,10 @@ import info.plugmania.mazemania.helpers.TriggerManager;
 import info.plugmania.mazemania.listeners.PlayerListener;
 
 import java.io.File;
-import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Server;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 

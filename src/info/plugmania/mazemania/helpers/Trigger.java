@@ -18,6 +18,8 @@
 
 package info.plugmania.mazemania.helpers;
 
+import org.bukkit.entity.Player;
+
 
 public class Trigger {
 	public int blockID;
