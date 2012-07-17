@@ -98,7 +98,7 @@ public class MazeCommand implements CommandExecutor {
 						}
 						sender.sendMessage("=========================");
 					}else if(args.length==2){
-						plugin.TriggerManager.removeTrigger(Material.getMaterial(args[1]));
+						plugin.TriggerManager.removeTrigger(Material.matchMaterial(args[1]));
 					}else if(args.length==3){
 						plugin.TriggerManager.addTrigger(new Trigger(Material.matchMaterial(args[1]).getId(), args[2], ""));
 					}else if(args.length>=4){
