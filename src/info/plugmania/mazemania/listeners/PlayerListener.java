@@ -310,7 +310,7 @@ public class PlayerListener implements Listener {
 			plugin.triggers.handle(event.getTo().getBlock().getLocation(), event.getPlayer());
 			Block b= event.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN);
 			if(plugin.TriggerManager.isTrigger(b.getType()))
-				plugin.TriggerManager.getTrigger(b.getType()).apply(event.getPlayer());
+				plugin.TriggerManager.getTrigger(b.getType()).apply(event.getPlayer(),plugin);
 		}
 	}
 

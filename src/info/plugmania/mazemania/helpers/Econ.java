@@ -32,7 +32,7 @@ public class Econ {
 	public Econ(MazeMania instance) {
 		plugin = instance;
 
-		RegisteredServiceProvider economyProvider = this.plugin.getServer().getServicesManager().getRegistration(Economy.class);
+		RegisteredServiceProvider<Economy> economyProvider = this.plugin.getServer().getServicesManager().getRegistration(Economy.class);
 		if (economyProvider != null) {
 			this.economy = ((Economy) economyProvider.getProvider());
 			Util.log("Vault economy hooked.");

@@ -18,6 +18,9 @@
 
 package info.plugmania.mazemania.helpers;
 
+import info.plugmania.mazemania.MazeMania;
+
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 
@@ -31,10 +34,22 @@ public class Trigger {
 		effect=e;
 		arguments=args;
 	}
+	
+	public Trigger(ConfigurationSection csec){
+		blockID=csec.getInt("blockID");
+		effect=csec.getString("effect");
+		arguments=csec.getString("arguments");
+	}
+	
+	public ConfigurationSection asConfigSection(ConfigurationSection csec){
+		csec.set("blockID", blockID);
+		csec.set("effect",effect);
+		csec.set("arguments", arguments);
+		return csec;
+	}
 
-
-public void apply(Player p){
-	Effects e=new Effects();
+public void apply(Player p,MazeMania instance){
+	Effects e=new Effects(instance);
 	e.apply(p, arguments, effect);
 }
 }

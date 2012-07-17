@@ -21,7 +21,9 @@ package info.plugmania.mazemania.helpers;
 import java.util.ArrayList;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 
+import info.plugmania.mazemania.ConfigUtil;
 import info.plugmania.mazemania.MazeMania;
 
 public class TriggerManager {
@@ -34,6 +36,9 @@ public class TriggerManager {
 	
 	public void addTrigger(Trigger t){
 		triggerList.add(t);
+		plugin.arena.dbConf.createSection("triggers");
+		plugin.arena.dbConf.set("triggers", saveTriggers(plugin.arena.dbConf.getConfigurationSection("triggers")));
+		ConfigUtil.saveConfig(plugin.arena.dbConf, "db");
 	}
 	
 	public Trigger getTrigger(Material block){
@@ -64,5 +69,19 @@ public class TriggerManager {
 	
 	public ArrayList<Trigger> getTriggers(){
 		return triggerList;
+	}
+	
+	public ConfigurationSection saveTriggers(ConfigurationSection csec){
+		for (Trigger t:triggerList){
+			csec.createSection(String.valueOf(t.blockID));
+			csec.set(String.valueOf(t.blockID), t.asConfigSection(csec.getConfigurationSection(String.valueOf(t.blockID))));
+		}
+		return csec;
+	}
+	
+	public void loadTriggers(ConfigurationSection csec){
+		for(String s:csec.getKeys(false)){
+			triggerList.add(new Trigger(csec.getConfigurationSection(s)));
+		}
 	}
 }

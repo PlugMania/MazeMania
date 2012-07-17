@@ -69,7 +69,7 @@ public class Reward {
 		p.updateInventory();
 	}
 
-	private void rewardPlayerMoney(Player p, double amount) {
+	public void rewardPlayerMoney(Player p, double amount) {
 		if (plugin.econ == null || plugin.econ.economy == null) {
 			p.sendMessage(Util.formatMessage(ChatColor.RED + "Vault not detected, could not reward money"));
 			return;

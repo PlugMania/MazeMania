@@ -1,5 +1,6 @@
 package info.plugmania.mazemania.helpers;
 
+import info.plugmania.mazemania.MazeMania;
 import info.plugmania.mazemania.Util;
 
 import java.lang.annotation.Annotation;
@@ -15,6 +16,10 @@ public class Effects {
 	
 	public Effects(){
 		
+	}
+	MazeMania plugin;
+public Effects(MazeMania instance){
+		plugin=instance;
 	}
 	public void apply(Player p,String arguments,String effect){
 		try {
@@ -56,7 +61,12 @@ public class Effects {
 	}
 
 	@effect public void kill(Player p,String args){
-		//a bit over the top?
+		//a bit over the top? hell, no!
+		p.damage(2000); //only 1000 hearts or so ;)
+	}
+	
+	@effect(argument="5") public void money(Player p,String args){
+plugin.reward.rewardPlayerMoney(p,Double.valueOf(args));
 	}
 
 

@@ -56,6 +56,8 @@ public class Arena {
 		dbConf = ConfigUtil.getConfig("db");
 
 		updatePosLocs();
+		
+		if(dbConf.isSet("triggers")) plugin.TriggerManager.loadTriggers(dbConf.getConfigurationSection("triggers"));
 	}
 
 	private void updatePosLocs() {
