@@ -20,6 +20,7 @@ package info.plugmania.mazemania.commands;
 
 import info.plugmania.mazemania.MazeMania;
 import info.plugmania.mazemania.Util;
+import info.plugmania.mazemania.helpers.Effects;
 import info.plugmania.mazemania.helpers.Trigger;
 
 import org.bukkit.Material;
@@ -91,6 +92,12 @@ public class MazeCommand implements CommandExecutor {
 					if (!plugin.util.hasPermMsg(player, "admin")) return true;
 					if(args.length==1){
 						sender.sendMessage("========================");
+						sender.sendMessage("/maze block [blockname] [event] [arguments]");
+						sender.sendMessage("========================");
+						sender.sendMessage("Available events:");
+						sender.sendMessage(plugin.util.join((String[])(new Effects()).listEffects().toArray(),",",0));
+						sender.sendMessage("========================");
+						sender.sendMessage("Currently defined events:");
 						sender.sendMessage("Block   Event   Args");
 						for (Trigger t:plugin.TriggerManager.getTriggers()){
 				
@@ -99,10 +106,13 @@ public class MazeCommand implements CommandExecutor {
 						sender.sendMessage("=========================");
 					}else if(args.length==2){
 						plugin.TriggerManager.removeTrigger(Material.matchMaterial(args[1]));
+						sender.sendMessage("Triggers for '" + args[1] + "' removed.");
 					}else if(args.length==3){
 						plugin.TriggerManager.addTrigger(new Trigger(Material.matchMaterial(args[1]).getId(), args[2], ""));
+						sender.sendMessage("Added trigger for '" + args[1] + "'.");
 					}else if(args.length>=4){
 						plugin.TriggerManager.addTrigger(new Trigger(Material.matchMaterial(args[1]).getId(), args[2], plugin.util.join(args, " ", 3)));
+						sender.sendMessage("Added trigger for '" + args[1] + "'.");
 					}else{
 						
 					}

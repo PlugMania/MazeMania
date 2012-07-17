@@ -7,6 +7,7 @@ import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -38,6 +39,19 @@ public Effects(MazeMania instance){
 			Util.debug("Error in Trigger reflection: " + e.getMessage());
 			//e.printStackTrace();
 		}
+	}
+	
+	public ArrayList<String> listEffects(){
+		ArrayList<String> els=new ArrayList<String>();
+		for(Method m : this.getClass().getMethods()) {
+				for(Annotation a:m.getAnnotations()) {
+					if(a instanceof effect){
+els.add(m.getName());
+					}
+				}
+			
+		}
+		return els;
 	}
 
 	@effect public void poison(Player p,String args){
