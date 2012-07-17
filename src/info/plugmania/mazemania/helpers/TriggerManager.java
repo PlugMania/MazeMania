@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import info.plugmania.mazemania.ConfigUtil;
 import info.plugmania.mazemania.MazeMania;
@@ -48,6 +49,18 @@ public class TriggerManager {
 			}
 		}
 		return null;
+	}
+	
+	public void applyTrigger(Material block,MazeMania instance,Player p){
+		try{
+			for(Trigger t:triggerList){
+				if(t.blockID==block.getId()){
+					t.apply(p, instance);
+				}
+			}
+			}catch(Exception ex){
+				
+			}
 	}
 	
 	public void removeTrigger(Material block){
