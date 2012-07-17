@@ -95,7 +95,7 @@ public class MazeCommand implements CommandExecutor {
 						sender.sendMessage("/maze block [blockname] [event] [arguments]");
 						sender.sendMessage("========================");
 						sender.sendMessage("Available events:");
-						sender.sendMessage(plugin.util.join((String[])(new Effects()).listEffects().toArray(),",",0));
+						sender.sendMessage(plugin.util.join((new Effects()).listEffects().toArray(),",",0));
 						sender.sendMessage("========================");
 						sender.sendMessage("Currently defined events:");
 						sender.sendMessage("Block   Event   Args");

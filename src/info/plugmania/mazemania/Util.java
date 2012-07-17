@@ -143,5 +143,30 @@ public class Util {
 		}
 		return true;
 	}
+
+	public String join(Object[] array, String delimiter, int startIndex) {
+		try {
+			Collection<Object> s = Arrays.asList(array);
+			StringBuffer buffer = new StringBuffer();
+			Iterator<Object> iter = s.iterator();
+
+			while (iter.hasNext()) {
+				if (startIndex == 0) {
+					buffer.append(String.valueOf(iter.next()));
+					if (iter.hasNext()) {
+						buffer.append(String.valueOf(delimiter));
+					}
+				} else {
+					startIndex--;
+					iter.next();
+				}
+			}
+
+			return buffer.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
 	
 }
