@@ -8,6 +8,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Method;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -66,11 +67,19 @@ public Effects(MazeMania instance){
 	}
 	
 	@effect(argument="5") public void money(Player p,String args){
-plugin.reward.rewardPlayerMoney(p,Double.valueOf(args));
+        plugin.reward.rewardPlayerMoney(p,Double.valueOf(args));
+	}
+	
+	@effect(argument="This is a message.") public void tell(Player p,String args){
+		p.sendMessage(ChatColor.translateAlternateColorCodes('&', args));
+	}
+	
+	@effect(argument="This is a slightly embarassing default message.") public void broadcast(Player p,String args){
+		plugin.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&', args));
 	}
 
 
 	@Retention(RetentionPolicy.RUNTIME) @interface effect{
-		  String argument() default "";
+		String argument() default "";
 	}
 }

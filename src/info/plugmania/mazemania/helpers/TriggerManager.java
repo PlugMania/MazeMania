@@ -51,10 +51,14 @@ public class TriggerManager {
 	}
 	
 	public void removeTrigger(Material block){
+		try{
 		for(Trigger t:triggerList){
 			if(t.blockID==block.getId()){
 				triggerList.remove(t);
 			}
+		}
+		}catch(Exception ex){
+			
 		}
 	}
 	
