@@ -23,6 +23,7 @@ import info.plugmania.mazemania.Util;
 import info.plugmania.mazemania.helpers.Effects;
 import info.plugmania.mazemania.helpers.Trigger;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -100,6 +101,7 @@ public class MazeCommand implements CommandExecutor {
 						sender.sendMessage(Util.formatMessage("/maze {block} [blockname] - remove all associated triggers"));
 						sender.sendMessage(Util.formatMessage("/maze {block} [blockname] [event] - sets an event with default args"));
 						sender.sendMessage(Util.formatMessage("/maze {block} [blockname] [event] [args] - sets an event with defined args"));
+						sender.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "-------------------------------------------------");
 						sender.sendMessage(Util.formatMessage("Currently defined events: [Block] [Event] [Arg]"));
 						for (Trigger t:plugin.TriggerManager.getTriggers()){
 							sender.sendMessage(Util.formatMessage(Material.getMaterial(t.blockID).name() + " " + t.effect + " " + t.arguments));
