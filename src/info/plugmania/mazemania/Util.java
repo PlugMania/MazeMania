@@ -48,7 +48,17 @@ public class Util {
 		String s = ChatColor.DARK_PURPLE.toString() + ChatColor.ITALIC.toString() + msg;
 		return s;
 	}
+	
+	public static String formatHelp(String msg) {
+		String s = ChatColor.DARK_PURPLE.toString() + msg;
+		return s;
+	}	
 
+	public static String formatHelpCmd(String msg) {
+		String s = ChatColor.GOLD.toString() + msg + ChatColor.DARK_PURPLE.toString();
+		return s;
+	}
+	
 	public static void log(String msg) {
 		log.info("[" + pdfFile.getName() + "] " + msg);
 	}
