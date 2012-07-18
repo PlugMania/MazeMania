@@ -91,19 +91,19 @@ public class MazeCommand implements CommandExecutor {
 				} else if (args[0].equalsIgnoreCase("block")) {
 					if (!plugin.util.hasPermMsg(player, "admin")) return true;
 					if(args.length==1){
-						sender.sendMessage("========================");
-						sender.sendMessage("/maze block [blockname] [event] [arguments]");
-						sender.sendMessage("========================");
-						sender.sendMessage("Available events:");
-						sender.sendMessage(plugin.util.join((new Effects()).listEffects().toArray(),",",0));
-						sender.sendMessage("========================");
-						sender.sendMessage("Currently defined events:");
-						sender.sendMessage("Block   Event   Args");
+						sender.sendMessage(Util.formatMessage("--------------- MazeMania Blocks ----------------"));
+						sender.sendMessage(Util.formatMessage("Event Types:"));
+						sender.sendMessage(Util.formatMessage(plugin.util.join((new Effects()).listEffects().toArray(),", ",0)));
+						sender.sendMessage(Util.formatMessage("Setup Commands:"));
+						sender.sendMessage(Util.formatMessage("/maze {block} [blockname] [event] [args]"));
+						sender.sendMessage(Util.formatMessage("/maze {block} - shows this helppage"));
+						sender.sendMessage(Util.formatMessage("/maze {block} [blockname] - remove all associated triggers"));
+						sender.sendMessage(Util.formatMessage("/maze {block} [blockname] [event] - sets an event with default args"));
+						sender.sendMessage(Util.formatMessage("/maze {block} [blockname] [event] [args] - sets an event with defined args"));
+						sender.sendMessage(Util.formatMessage("Currently defined events: [Block] [Event] [Arg]"));
 						for (Trigger t:plugin.TriggerManager.getTriggers()){
-				
-							sender.sendMessage(Material.getMaterial(t.blockID).name() + " " + t.effect + " " + t.arguments);
+							sender.sendMessage(Util.formatMessage(Material.getMaterial(t.blockID).name() + " " + t.effect + " " + t.arguments));
 						}
-						sender.sendMessage("=========================");
 					}else if(args.length==2){
 						plugin.TriggerManager.removeTrigger(Material.matchMaterial(args[1]));
 						sender.sendMessage("Triggers for '" + args[1] + "' removed.");
