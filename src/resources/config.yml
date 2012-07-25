@@ -1,6 +1,6 @@
 #Config
 #Version later to be used to maintain config
-version: 1.3.0
+version: 1.4.0
 
 ############### GENERAL ##############
 #How long to wait for players to join in seconds
@@ -67,3 +67,6 @@ randomSpawn: true
 #To allow pvp you must also enable in server.properties
 allowPvP: true
 
+#uses separate player chat for maze players
+#note that this will use players' usernames, not displaynames
+useSeparatePlayerChat: false

@@ -39,6 +39,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -328,6 +329,15 @@ public class PlayerListener implements Listener {
 		if (!plugin.arena.playing.contains(event.getPlayer())) return;
 		if (!plugin.arena.isInArena(event.getBlock().getLocation())) return;
 		event.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onPlaceBreak(PlayerChatEvent event) {
+if(!plugin.mainConf.getBoolean("useSeparatePlayerChat", true)) return;
+event.setCancelled(true);
+for(Player p:plugin.arena.playing){
+	p.sendMessage("<" + event.getPlayer() + "> " + event.getMessage());
+}
 	}
 
 }
