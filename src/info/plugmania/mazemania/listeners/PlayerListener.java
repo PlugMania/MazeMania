@@ -333,7 +333,7 @@ public class PlayerListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerChat(PlayerChatEvent event) {
-if(!plugin.mainConf.getBoolean("useSeparatePlayerChat", true)) return;
+if(!plugin.mainConf.getBoolean("useSeparatePlayerChat", false)) return;
 event.setCancelled(true);
 for(Player p:plugin.arena.playing){
 	p.sendMessage("<" + event.getPlayer() + "> " + event.getMessage());
