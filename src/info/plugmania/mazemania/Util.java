@@ -18,14 +18,18 @@
 
 package info.plugmania.mazemania;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 public class Util {
@@ -178,5 +182,55 @@ public class Util {
 			return "";
 		}
 	}
+	
+
+	/*
+	 * Utils originating in hawkeye;
+	 */
+
+	/**
+	 * Compress an ItemStack[] into a HashMap of the item string and the total amount of that item
+	 * Uses {@BlockUtil} to get the item string
+	 * @param inventory ItemStack[] to compress
+	 * @return HashMap<String,Integer>
+	 */
+	public HashMap<String,Integer> compressInventory(ItemStack[] inventory) {
+		HashMap<String,Integer> items = new HashMap<String,Integer>();
+		for (ItemStack item : inventory) {
+			if (item == null) continue;
+			String iString = item.getType().toString();
+			if (items.containsKey(iString)) items.put(iString, items.get(iString) + item.getAmount());
+			else items.put(iString, item.getAmount());
+		}
+		return items;
+	}
+
+
+	/**
+	 * Takes two compressed inventories and returns a string representation of the difference
+	 * @param before HashMap<String,Integer> of inventory before changes
+	 * @param after HashMap<String,Integer> of inventory after changes
+	 * @return String in the form item:data,amount&item:data,amount@item:data,amount&item:data,amount where the first part is additions and second is subtractions
+	 */
+	public String createDifferenceString(HashMap<String,Integer> before, HashMap<String,Integer> after) {
+		List<String> add = new ArrayList<String>();
+		List<String> sub = new ArrayList<String>();
+		for (Entry<String, Integer> item : before.entrySet()) {
+			//If the item does not appear after changes
+		    if (!after.containsKey(item.getKey())) sub.add(item.getKey() + "," + item.getValue());
+		    //If the item is smaller after changes
+		    else if (item.getValue() > after.get(item.getKey())) sub.add(item.getKey() + "," + (item.getValue() - after.get(item.getKey())));
+		    //If the item is larger after changes
+		    else if (item.getValue() < after.get(item.getKey())) add.add(item.getKey() + "," + (after.get(item.getKey()) - item.getValue()));
+		}
+		for (Entry<String, Integer> item : after.entrySet()) {
+			//If the item does not appear before changes
+			if (!before.containsKey(item.getKey())) add.add(item.getKey() + "," + item.getValue());
+		}
+		return join(add.toArray(), "&",0) + "@" + join(sub.toArray(), "&",0);
+	}
+	
+	
+	
 	
 }

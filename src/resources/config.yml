@@ -70,3 +70,7 @@ allowPvP: true
 #uses separate player chat for maze players
 #note that this will use players' usernames, not displaynames
 useSeparatePlayerChat: false
+
+#Notify players of activities of other players
+#collection of nuggets or loot will be broadcast to all players in maze if this is true
+notifyLoot: false

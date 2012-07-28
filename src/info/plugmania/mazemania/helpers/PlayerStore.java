@@ -30,7 +30,7 @@ public class PlayerStore {
 	public ItemStack[] armour = null;
 
 	public HashMap<Location, Inventory> chests = new HashMap<Location, Inventory>();
-
+public ItemStack[] openChest;
 	public Location previousLoc = null;
 
 	public GameMode gm;

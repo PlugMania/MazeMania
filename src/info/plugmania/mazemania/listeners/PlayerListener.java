@@ -24,6 +24,7 @@ import info.plugmania.mazemania.Util;
 import info.plugmania.mazemania.helpers.PlayerStore;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -39,6 +40,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -48,6 +51,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 
 public class PlayerListener implements Listener {
@@ -215,6 +219,8 @@ public class PlayerListener implements Listener {
 					ps.chests.put(b.getLocation(), inv);
 					player.openInventory(ps.chests.get(b.getLocation()));
 				}
+				ps.openChest=ps.chests.get(b.getLocation()).getContents();
+
 			}
 		}
 	}
@@ -299,6 +305,18 @@ public class PlayerListener implements Listener {
 			}
 		}
 	}
+	
+	public void InventoryClose(InventoryCloseEvent event) {
+		if(!plugin.arena.playing.contains(event.getPlayer())) return;
+		if(!plugin.getConfig().getBoolean("notifyLoot",false)) return;
+PlayerStore ps=plugin.arena.store.get(event.getPlayer());
+ItemStack[] before=ps.openChest;
+ItemStack[] after=event.getInventory().getContents();
+					for(Player p:plugin.arena.playing){
+						p.sendMessage(ChatColor.DARK_PURPLE + event.getPlayer().getName() + "Has looked in a loot chest! (" + ChatColor.translateAlternateColorCodes('&', plugin.util.createDifferenceString(plugin.util.compressInventory(before), plugin.util.compressInventory(after))) + ChatColor.DARK_PURPLE + ")");
+				}
+				
+	}
 
 	@EventHandler
 	public void onTriggers(PlayerMoveEvent event) {
@@ -333,11 +351,13 @@ public class PlayerListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerChat(PlayerChatEvent event) {
+		if(!plugin.arena.playing.contains(event.getPlayer())) return;
 if(!plugin.mainConf.getBoolean("useSeparatePlayerChat", false)) return;
 event.setCancelled(true);
 for(Player p:plugin.arena.playing){
-	p.sendMessage("<" + event.getPlayer() + "> " + event.getMessage());
+	p.sendMessage("<" + event.getPlayer().getName() + "> " + event.getMessage());
 }
 	}
+	
 
 }
