@@ -19,6 +19,9 @@
 package info.plugmania.mazemania.listeners;
 
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import info.plugmania.mazemania.MazeMania;
 import info.plugmania.mazemania.Util;
 import info.plugmania.mazemania.helpers.PlayerStore;
@@ -305,17 +308,27 @@ public class PlayerListener implements Listener {
 			}
 		}
 	}
-	
+	@EventHandler
 	public void InventoryClose(InventoryCloseEvent event) {
 		if(!plugin.arena.playing.contains(event.getPlayer())) return;
 		if(!plugin.getConfig().getBoolean("notifyLoot",false)) return;
 PlayerStore ps=plugin.arena.store.get(event.getPlayer());
 ItemStack[] before=ps.openChest;
 ItemStack[] after=event.getInventory().getContents();
+//plugin.getServer().getLogger().info(strCompress(plugin.util.compressInventory(before)));
+//plugin.getServer().getLogger().info(strCompress(plugin.util.compressInventory(after)));
 					for(Player p:plugin.arena.playing){
 						p.sendMessage(ChatColor.DARK_PURPLE + event.getPlayer().getName() + "Has looked in a loot chest! (" + ChatColor.translateAlternateColorCodes('&', plugin.util.createDifferenceString(plugin.util.compressInventory(before), plugin.util.compressInventory(after))) + ChatColor.DARK_PURPLE + ")");
 				}
 				
+	}
+	
+	String strCompress(HashMap<String,Integer> items){
+		String ret="";
+		for(Entry<String,Integer> itemst:items.entrySet()){
+			ret+=itemst.getKey() + " " +  itemst.getValue() + ";";
+		}
+		return ret;
 	}
 
 	@EventHandler
