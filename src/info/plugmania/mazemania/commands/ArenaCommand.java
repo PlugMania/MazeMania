@@ -19,6 +19,7 @@
 package info.plugmania.mazemania.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -79,7 +80,7 @@ public class ArenaCommand {
 			leaveMatch(player);
 			plugin.arena.playing.remove(player);
 			player.sendMessage(Util.formatMessage("You have left the MazeMania game."));
-			Bukkit.broadcastMessage(Util.formatBroadcast(player.getName() + " has left the maze!"));
+			Util.broadcastInside(ChatColor.GOLD + "<" + player.getName() + ">" + ChatColor.BLUE + " has left the maze!");
 			if (plugin.arena.playing.isEmpty()) {
 				plugin.arena.gameActive = false;
 				Bukkit.broadcastMessage(Util.formatBroadcast("The MazeMania game was forfeited, all players left!"));
