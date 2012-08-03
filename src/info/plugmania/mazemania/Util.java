@@ -88,10 +88,14 @@ public class Util {
 	}
 	
 	public static void broadcastInside(String msg) {
-		if(plugin.debug) log("Was called");
 		for(Player p:plugin.arena.playing){
-			if(plugin.debug) log("Was inside");
-			p.sendMessage(ChatColor.BLUE.toString() + "[MazeMania] " + msg);
+			p.sendMessage(ChatColor.BLUE + "[MazeMania] " + msg);
+		}
+	}
+	
+	public static void chatInside(String msg) {
+		for(Player p:plugin.arena.playing){
+			p.sendMessage(ChatColor.BLUE + "[MM] " + msg);
 		}
 	}
 	
@@ -229,9 +233,8 @@ public class Util {
 		for (Entry<String, Integer> item : before.entrySet()) {
 			//If the item does not appear after changes
 		    if (!after.containsKey(item.getKey())) {
-		    	String loot = item.getKey().toLowerCase().replace("_", " ");
-		    	loot = loot.substring(0,1).toUpperCase() + loot.substring(1,loot.length());
-		    	sub.add("1 " + loot);
+		    	String loot = item.getKey().replace("_", " ");
+		    	sub.add(ChatColor.GOLD + "1 [" + loot + "] " + ChatColor.BLUE);
 		    }
 		    //If the item is smaller after changes
 		    //else if (item.getValue() > after.get(item.getKey())) sub.add(item.getKey() + "," + (item.getValue() - after.get(item.getKey())));

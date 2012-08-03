@@ -320,7 +320,7 @@ public class PlayerListener implements Listener {
 		String looted = plugin.util.createDifferenceString(plugin.util.compressInventory(before), plugin.util.compressInventory(after));
 		
 		if(looted.length()>=5) {
-			Util.broadcastInside(event.getPlayer().getName() + " picked up " + looted + " from a chest!");
+			Util.broadcastInside(ChatColor.GOLD + "<" + event.getPlayer().getName() + ">" + " found " + looted + "!");
 		}		
 	}
 	
@@ -366,11 +366,10 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onPlayerChat(PlayerChatEvent event) {
 		if(!plugin.arena.playing.contains(event.getPlayer())) return;
-if(!plugin.mainConf.getBoolean("useSeparatePlayerChat", false)) return;
-event.setCancelled(true);
-for(Player p:plugin.arena.playing){
-	p.sendMessage("<" + event.getPlayer().getName() + "> " + event.getMessage());
-}
+		if(!plugin.mainConf.getBoolean("useSeparatePlayerChat", false)) return;
+		event.setCancelled(true);
+
+		Util.chatInside(ChatColor.GOLD + "<" + event.getPlayer().getName() + "> "+ ChatColor.WHITE + event.getMessage());
 	}
 	
 
