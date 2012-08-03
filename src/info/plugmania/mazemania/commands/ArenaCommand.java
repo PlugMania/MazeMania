@@ -80,7 +80,7 @@ public class ArenaCommand {
 			leaveMatch(player);
 			plugin.arena.playing.remove(player);
 			player.sendMessage(Util.formatMessage("You have left the MazeMania game."));
-			Util.broadcastInside(ChatColor.GOLD + "<" + player.getName() + ">" + ChatColor.BLUE + " has left the maze!");
+			Util.broadcastInside(ChatColor.GOLD + player.getName() + ChatColor.BLUE + " has left the maze!");
 			if (plugin.arena.playing.isEmpty()) {
 				plugin.arena.gameActive = false;
 				Bukkit.broadcastMessage(Util.formatBroadcast("The MazeMania game was forfeited, all players left!"));

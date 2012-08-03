@@ -154,7 +154,7 @@ public class PlayerListener implements Listener {
 		Player player = event.getPlayer();
 		if (plugin.arena.playing.contains(player)) {
 			plugin.mazeCommand.arenaCommand.leaveMatch(player);
-			Util.broadcastInside(ChatColor.GOLD + "<" + player.getName() + ">" + ChatColor.BLUE + " has left the maze!");
+			Util.broadcastInside(ChatColor.GOLD + "" + player.getName() + ChatColor.BLUE + " has left the maze!");
 
 			plugin.arena.playing.remove(player);
 
@@ -320,7 +320,7 @@ public class PlayerListener implements Listener {
 		String looted = plugin.util.createDifferenceString(plugin.util.compressInventory(before), plugin.util.compressInventory(after));
 		
 		if(looted.length()>=5) {
-			Util.broadcastInside(ChatColor.GOLD + "<" + event.getPlayer().getName() + ">" + " found " + looted + "!");
+			Util.broadcastInside(ChatColor.GOLD + event.getPlayer().getName() + ChatColor.BLUE + " found " + looted + "!");
 		}		
 	}
 	

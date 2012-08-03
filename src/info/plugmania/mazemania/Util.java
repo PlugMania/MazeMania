@@ -234,7 +234,7 @@ public class Util {
 			//If the item does not appear after changes
 		    if (!after.containsKey(item.getKey())) {
 		    	String loot = item.getKey().replace("_", " ");
-		    	sub.add(ChatColor.GOLD + "1 [" + loot + "] " + ChatColor.BLUE);
+		    	sub.add(ChatColor.GOLD + "1 " + loot + " " + ChatColor.BLUE);
 		    }
 		    //If the item is smaller after changes
 		    //else if (item.getValue() > after.get(item.getKey())) sub.add(item.getKey() + "," + (item.getValue() - after.get(item.getKey())));
