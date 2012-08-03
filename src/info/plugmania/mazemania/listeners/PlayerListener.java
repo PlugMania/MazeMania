@@ -154,7 +154,7 @@ public class PlayerListener implements Listener {
 		Player player = event.getPlayer();
 		if (plugin.arena.playing.contains(player)) {
 			plugin.mazeCommand.arenaCommand.leaveMatch(player);
-			Bukkit.broadcastMessage(Util.formatBroadcast(player.getName() + " has left the maze!"));
+			Util.broadcastInside(ChatColor.GOLD + "<" + player.getName() + ">" + ChatColor.BLUE + " has left the maze!");
 
 			plugin.arena.playing.remove(player);
 
