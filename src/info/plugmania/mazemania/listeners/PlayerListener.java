@@ -103,7 +103,7 @@ public class PlayerListener implements Listener {
 		if (!plugin.arena.playing.contains(player)) return;
 
 		plugin.arena.playing.remove(player);
-		Bukkit.broadcastMessage(Util.formatBroadcast(player.getName() + " has died in the maze!"));
+		Util.broadcastInside(ChatColor.GOLD + "<" + player.getName() + ">" + ChatColor.BLUE +  "has died in the maze!");
 		if (plugin.arena.playing.size() == 1) {
 			Player winner = plugin.arena.playing.get(0);
 			Bukkit.broadcastMessage(Util.formatBroadcast(winner.getName() + " is the last man standing and won the maze!"));
