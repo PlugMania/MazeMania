@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginDescriptionFile;
 
@@ -47,7 +48,7 @@ public class Util {
 	public static String formatBroadcast(String msg) {
 		String s = ChatColor.BLUE.toString() + "[MazeMania] " + msg;
 		return s;
-	}
+	}	
 
 	public static String formatMessage(String msg) {
 		String s = ChatColor.DARK_PURPLE.toString() + ChatColor.ITALIC.toString() + msg;
@@ -84,6 +85,14 @@ public class Util {
 
 	public static void sendMessagePlayerNotOnline(CommandSender sender) {
 		sender.sendMessage(ChatColor.RED + "That player is not online!");
+	}
+	
+	public static void broadcastInside(String msg) {
+		if(plugin.debug) log("Was called");
+		for(Player p:plugin.arena.playing){
+			if(plugin.debug) log("Was inside");
+			p.sendMessage(ChatColor.BLUE.toString() + "[MazeMania] " + msg);
+		}
 	}
 	
 	public boolean hasPermMsg(CommandSender sender,String perm){

@@ -37,7 +37,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class MazeMania extends JavaPlugin {
 	public YamlConfiguration mainConf;
 
-	public boolean debug = false;
+	public boolean debug = true;
 
 	private final ConfigUtil configUtil;
 	public final Util util;

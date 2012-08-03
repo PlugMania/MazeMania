@@ -320,9 +320,7 @@ public class PlayerListener implements Listener {
 		String looted = plugin.util.createDifferenceString(plugin.util.compressInventory(before), plugin.util.compressInventory(after));
 		
 		if(looted.length()>=5) {
-			for(Player p:plugin.arena.playing){
-				p.sendMessage(ChatColor.DARK_PURPLE + event.getPlayer().getName() + " picked up " + looted + " from a chest!");
-			}
+			Util.broadcastInside(event.getPlayer().getName() + " picked up " + looted + " from a chest!");
 		}		
 	}
 	
