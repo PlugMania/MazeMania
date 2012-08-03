@@ -63,6 +63,10 @@ joinWhenever: true
 #Random spawn
 randomSpawn: true
 
+#On death players spawn inside maze again
+#Only way out is leave or win
+noDeath: true
+
 #Allow pvp in arena
 #To allow pvp you must also enable in server.properties
 allowPvP: true
