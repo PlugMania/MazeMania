@@ -28,6 +28,7 @@ import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -215,19 +216,26 @@ public class Util {
 	public String createDifferenceString(HashMap<String,Integer> before, HashMap<String,Integer> after) {
 		List<String> add = new ArrayList<String>();
 		List<String> sub = new ArrayList<String>();
+		
 		for (Entry<String, Integer> item : before.entrySet()) {
 			//If the item does not appear after changes
-		    if (!after.containsKey(item.getKey())) sub.add(item.getKey() + "," + item.getValue());
+		    if (!after.containsKey(item.getKey())) {
+		    	String loot = item.getKey().toLowerCase().replace("_", " ");
+		    	loot = loot.substring(0,1).toUpperCase() + loot.substring(1,loot.length());
+		    	sub.add("1 " + loot);
+		    }
 		    //If the item is smaller after changes
-		    else if (item.getValue() > after.get(item.getKey())) sub.add(item.getKey() + "," + (item.getValue() - after.get(item.getKey())));
+		    //else if (item.getValue() > after.get(item.getKey())) sub.add(item.getKey() + "," + (item.getValue() - after.get(item.getKey())));
 		    //If the item is larger after changes
-		    else if (item.getValue() < after.get(item.getKey())) add.add(item.getKey() + "," + (after.get(item.getKey()) - item.getValue()));
+		    //else if (item.getValue() < after.get(item.getKey())) add.add(item.getKey() + "," + (after.get(item.getKey()) - item.getValue()));
 		}
-		for (Entry<String, Integer> item : after.entrySet()) {
+		//for (Entry<String, Integer> item : after.entrySet()) {
 			//If the item does not appear before changes
-			if (!before.containsKey(item.getKey())) add.add(item.getKey() + "," + item.getValue());
-		}
-		return join(add.toArray(), "&",0) + "@" + join(sub.toArray(), "&",0);
+			//if (!before.containsKey(item.getKey())) add.add(item.getKey() + "," + item.getValue());
+		//}
+		//return join(add.toArray(), "&",0) + "" + join(sub.toArray(), "&",0);
+		
+		return join(sub.toArray(), " & ",0);
 	}
 	
 	

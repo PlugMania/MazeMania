@@ -312,15 +312,18 @@ public class PlayerListener implements Listener {
 	public void InventoryClose(InventoryCloseEvent event) {
 		if(!plugin.arena.playing.contains(event.getPlayer())) return;
 		if(!plugin.getConfig().getBoolean("notifyLoot",false)) return;
-PlayerStore ps=plugin.arena.store.get(event.getPlayer());
-ItemStack[] before=ps.openChest;
-ItemStack[] after=event.getInventory().getContents();
-//plugin.getServer().getLogger().info(strCompress(plugin.util.compressInventory(before)));
-//plugin.getServer().getLogger().info(strCompress(plugin.util.compressInventory(after)));
-					for(Player p:plugin.arena.playing){
-						p.sendMessage(ChatColor.DARK_PURPLE + event.getPlayer().getName() + "Has looked in a loot chest! (" + ChatColor.translateAlternateColorCodes('&', plugin.util.createDifferenceString(plugin.util.compressInventory(before), plugin.util.compressInventory(after))) + ChatColor.DARK_PURPLE + ")");
-				}
-				
+		
+		PlayerStore ps=plugin.arena.store.get(event.getPlayer());
+		ItemStack[] before=ps.openChest;
+		ItemStack[] after=event.getInventory().getContents();
+		
+		String looted = plugin.util.createDifferenceString(plugin.util.compressInventory(before), plugin.util.compressInventory(after));
+		
+		if(looted.length()>=5) {
+			for(Player p:plugin.arena.playing){
+				p.sendMessage(ChatColor.DARK_PURPLE + event.getPlayer().getName() + " picked up " + looted + " from a chest!");
+			}
+		}		
 	}
 	
 	String strCompress(HashMap<String,Integer> items){
