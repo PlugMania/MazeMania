@@ -134,9 +134,9 @@ public class PlayerListener implements Listener {
 					} else {
 						killer = event.getCause().name();
 					}
-					player.sendMessage(ChatColor.WHITE + "You died");
-					player.sendMessage(Util.formatMessage("If you want to leave the game type " + ChatColor.GOLD +"/maze leave"));
+					//player.sendMessage(Util.formatMessage("If you want to leave the game type " + ChatColor.GOLD +"/maze leave"));
 					Util.broadcastInside(ChatColor.GOLD + "" + player.getName() + ChatColor.BLUE +  " was killed by " + ChatColor.GOLD + killer + ChatColor.BLUE + "!");
+					player.sendMessage(ChatColor.WHITE + "You died ...");
 					
 					// FIX FOR CLIENT NOT SHOWING ENTITIES
 					for (Player p:plugin.arena.playing) {
