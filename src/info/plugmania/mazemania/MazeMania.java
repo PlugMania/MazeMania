@@ -38,7 +38,7 @@ public class MazeMania extends JavaPlugin {
 	public YamlConfiguration mainConf;
 
 	public boolean debug = false;
-	public boolean noDeath = true;
+	//public boolean noDeath = true;
 
 	private final ConfigUtil configUtil;
 	public final Util util;

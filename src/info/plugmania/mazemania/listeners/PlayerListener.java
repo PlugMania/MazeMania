@@ -106,7 +106,7 @@ public class PlayerListener implements Listener {
 
 		plugin.arena.playing.remove(player);
 		
-		if (plugin.arena.playing.size() == 1 && !plugin.noDeath){
+		if (plugin.arena.playing.size() == 1 && !plugin.getConfig().getBoolean("noDeath")){
 			Player winner = plugin.arena.playing.get(0);
 			Bukkit.broadcastMessage(Util.formatBroadcast(winner.getName() + " is the last man standing and won the maze!"));
 			plugin.mazeCommand.arenaCommand.leaveMatch(winner);
@@ -127,7 +127,7 @@ public class PlayerListener implements Listener {
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		Player player = event.getPlayer();
 		if (!plugin.arena.store.containsKey(player)) return;
-		if (plugin.noDeath) {
+		if (plugin.getConfig().getBoolean("noDeath")) {
 			if (plugin.mainConf.getBoolean("randomSpawn", true)) {
 				event.setRespawnLocation(plugin.arena.getRandomSpawn());
 			} else {
