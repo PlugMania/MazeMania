@@ -136,6 +136,11 @@ public class PlayerListener implements Listener {
 					return;
 				}
 				event.setRespawnLocation(spawn);
+				player.sendMessage(Util.formatMessage("If you want to leave the game type " + ChatColor.GOLD +"/maze leave"));
+			
+				for (Player p:plugin.arena.playing) {
+				    if (p.canSee(player)) p.showPlayer(player);
+				}
 			}
 			
 			return;
