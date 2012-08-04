@@ -120,19 +120,22 @@ public class PlayerListener implements Listener {
 						}
 					}
 					
-					String damager = "";
+					String killer = "";
 					if(event.getCause().equals(DamageCause.ENTITY_ATTACK)) {
 						
-						if(event.getDamager() instanceof Player) damager = player.getDisplayName();
+						if(event.getDamager() instanceof Player) {
+							Player damager = (Player) event.getDamager();
+							killer = damager.getDisplayName();
+						}
 						else {
 							LivingEntity entity = (LivingEntity) event.getEntity();
-							damager = entity.getType().getName();
+							killer = entity.getType().getName();
 						}
 					} else {
-						damager = event.getCause().name();
+						killer = event.getCause().name();
 					}
 					player.sendMessage(Util.formatMessage("If you want to leave the game type " + ChatColor.GOLD +"/maze leave"));
-					Util.broadcastInside(ChatColor.GOLD + "" + player.getName() + ChatColor.BLUE +  " was killed by " + ChatColor.GOLD + damager + ChatColor.BLUE + "!");
+					Util.broadcastInside(ChatColor.GOLD + "" + player.getName() + ChatColor.BLUE +  " was killed by " + ChatColor.GOLD + killer + ChatColor.BLUE + "!");
 					
 					// FIX FOR CLIENT NOT SHOWING ENTITIES
 					for (Player p:plugin.arena.playing) {
