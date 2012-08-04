@@ -128,12 +128,13 @@ public class PlayerListener implements Listener {
 							killer = damager.getDisplayName();
 						}
 						else {
-							LivingEntity entity = (LivingEntity) event.getEntity();
+							LivingEntity entity = (LivingEntity) event.getDamager();
 							killer = entity.getType().getName();
 						}
 					} else {
 						killer = event.getCause().name();
 					}
+					player.sendMessage(ChatColor.WHITE + "You died");
 					player.sendMessage(Util.formatMessage("If you want to leave the game type " + ChatColor.GOLD +"/maze leave"));
 					Util.broadcastInside(ChatColor.GOLD + "" + player.getName() + ChatColor.BLUE +  " was killed by " + ChatColor.GOLD + killer + ChatColor.BLUE + "!");
 					
