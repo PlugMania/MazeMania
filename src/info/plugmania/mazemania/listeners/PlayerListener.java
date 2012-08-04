@@ -103,27 +103,23 @@ public class PlayerListener implements Listener {
 		if (!plugin.arena.playing.contains(player)) return;
 
 		Util.broadcastInside(ChatColor.GOLD + "" + player.getName() + ChatColor.BLUE +  "has died in the maze!");
-		// Respawn in the Maze and continues current game
-		// Do nothing here ...
+
+		plugin.arena.playing.remove(player);
 		
-		// Death ends the game for the player and ends the maze if ...
-		if(plugin.mainConf.getBoolean("noDeath", false)){
-			plugin.arena.playing.remove(player);
-			if (plugin.arena.playing.size() == 1) {
-				Player winner = plugin.arena.playing.get(0);
-				Bukkit.broadcastMessage(Util.formatBroadcast(winner.getName() + " is the last man standing and won the maze!"));
-				plugin.mazeCommand.arenaCommand.leaveMatch(winner);
-				//WIN
-				plugin.arena.store.remove(winner);
-				player.sendMessage(Util.formatMessage("Thank you for playing MazeMania."));
-				plugin.arena.playing.clear();
-				plugin.arena.gameActive = false;
-	
-				plugin.reward.rewardPlayer(winner);
-			} else if (plugin.arena.playing.isEmpty()) {
-				plugin.arena.gameActive = false;
-				Bukkit.broadcastMessage(Util.formatBroadcast("The MazeMania game was forfeited, all players left!"));
-			}
+		if (plugin.arena.playing.size() == 1 && !plugin.noDeath){
+			Player winner = plugin.arena.playing.get(0);
+			Bukkit.broadcastMessage(Util.formatBroadcast(winner.getName() + " is the last man standing and won the maze!"));
+			plugin.mazeCommand.arenaCommand.leaveMatch(winner);
+			//WIN
+			plugin.arena.store.remove(winner);
+			player.sendMessage(Util.formatMessage("Thank you for playing MazeMania."));
+			plugin.arena.playing.clear();
+			plugin.arena.gameActive = false;
+
+			plugin.reward.rewardPlayer(winner);
+		} else if (plugin.arena.playing.isEmpty()) {
+			plugin.arena.gameActive = false;
+			Bukkit.broadcastMessage(Util.formatBroadcast("The MazeMania game was forfeited, all players left!"));
 		}
 	}
 
@@ -131,43 +127,41 @@ public class PlayerListener implements Listener {
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		Player player = event.getPlayer();
 		if (!plugin.arena.store.containsKey(player)) return;
-
-		// Respawn in the Maze and continues current game
-		if(plugin.mainConf.getBoolean("noDeath", true)){
+		if (plugin.noDeath) {
 			if (plugin.mainConf.getBoolean("randomSpawn", true)) {
-				player.teleport(plugin.arena.getRandomSpawn());
+				event.setRespawnLocation(plugin.arena.getRandomSpawn());
 			} else {
 				Location spawn = plugin.arena.getSpawn();
 				if (spawn == null) {
 					return;
 				}
-				player.teleport(spawn);
+				event.setRespawnLocation(spawn);
 			}
+			
+			return;
 		}
-		// Death ends game for player
-		else {
-			player.getInventory().clear();
-			player.setSneaking(false);
+			
+		player.getInventory().clear();
+		player.setSneaking(false);
 	
-			Location back;
-			PlayerStore ps = plugin.arena.store.get(player);
+		Location back;
+		PlayerStore ps = plugin.arena.store.get(player);
 	
-			player.getInventory().setContents(ps.inv.getContents());
-			back = ps.previousLoc;
-			player.setGameMode(ps.gm);
-			player.setFoodLevel(ps.hunger);
-			player.setHealth(ps.health);
-			player.getInventory().setArmorContents(ps.armour);
+		player.getInventory().setContents(ps.inv.getContents());
+		back = ps.previousLoc;
+		player.setGameMode(ps.gm);
+		player.setFoodLevel(ps.hunger);
+		player.setHealth(ps.health);
+		player.getInventory().setArmorContents(ps.armour);
 	
-			if (back == null) {
-				player.sendMessage(Util.formatMessage("Your previous location was not found."));
-				event.setRespawnLocation(player.getWorld().getSpawnLocation());
-			} else {
-				event.setRespawnLocation(back);
-			}
-	
-			plugin.arena.store.remove(player);
+		if (back == null) {
+			player.sendMessage(Util.formatMessage("Your previous location was not found."));
+			event.setRespawnLocation(player.getWorld().getSpawnLocation());
+		} else {
+			event.setRespawnLocation(back);
 		}
+	
+		plugin.arena.store.remove(player);
 	}
 
 	@EventHandler
