@@ -33,6 +33,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -55,6 +56,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 
 public class PlayerListener implements Listener {
@@ -95,6 +99,54 @@ public class PlayerListener implements Listener {
 			if (!event.getCause().equals(DamageCause.ENTITY_ATTACK)) //make sure the damage was 'natural'
 				event.setCancelled(true);
 		}
+
+		if(plugin.getConfig().getBoolean("noDeath")) { if(event.getEntity() instanceof Player) {
+			Player player = (Player) event.getEntity();
+			if(plugin.arena.playing.contains(player)){
+				
+				// CHECK IF DAMAGE KILLS PLAYER
+				if(plugin.getServer().getPlayer(player.getName()).getHealth()-event.getDamage()<=1) {
+
+					// CHECK FOR KEEP SPAWNING IN MAZE
+					if (plugin.getConfig().getBoolean("noDeath")) {
+						if (plugin.mainConf.getBoolean("randomSpawn", true)) {
+							player.teleport(plugin.arena.getRandomSpawn());
+						} else {
+							Location spawn = plugin.arena.getSpawn();
+							if (spawn == null) {
+								return;
+							}
+							player.teleport(spawn);
+						}
+					}
+					
+					String damager = "";
+					if(event.getCause().equals(DamageCause.ENTITY_ATTACK)) {
+						
+						if(event.getDamager() instanceof Player) damager = player.getDisplayName();
+						else {
+							LivingEntity entity = (LivingEntity) event.getEntity();
+							damager = entity.getType().getName();
+						}
+					} else {
+						damager = event.getCause().name();
+					}
+					player.sendMessage(Util.formatMessage("If you want to leave the game type " + ChatColor.GOLD +"/maze leave"));
+					Util.broadcastInside(ChatColor.GOLD + "" + player.getName() + ChatColor.BLUE +  " was killed by " + ChatColor.GOLD + damager + ChatColor.BLUE + "!");
+					
+					// FIX FOR CLIENT NOT SHOWING ENTITIES
+					for (Player p:plugin.arena.playing) {
+					    if (p.canSee(player)) p.showPlayer(player);
+					}
+					
+					// CANCEL DAMAGE AKA DEATH
+					player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 0, 1));
+					player.setFireTicks(0);
+					player.setHealth(20);
+					event.setCancelled(true);
+				}
+			}
+		}}
 	}
 
 	@EventHandler
@@ -104,9 +156,9 @@ public class PlayerListener implements Listener {
 
 		Util.broadcastInside(ChatColor.GOLD + "" + player.getName() + ChatColor.BLUE +  " has died in the maze!");
 
-		if(!plugin.getConfig().getBoolean("noDeath")) plugin.arena.playing.remove(player);
+		plugin.arena.playing.remove(player);
 		
-		if (plugin.arena.playing.size() == 1 && !plugin.getConfig().getBoolean("noDeath")){
+		if (plugin.arena.playing.size() == 1){
 			Player winner = plugin.arena.playing.get(0);
 			Bukkit.broadcastMessage(Util.formatBroadcast(winner.getName() + " is the last man standing and won the maze!"));
 			plugin.mazeCommand.arenaCommand.leaveMatch(winner);
@@ -127,24 +179,6 @@ public class PlayerListener implements Listener {
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		Player player = event.getPlayer();
 		if (!plugin.arena.store.containsKey(player)) return;
-		if (plugin.getConfig().getBoolean("noDeath")) {
-			if (plugin.mainConf.getBoolean("randomSpawn", true)) {
-				event.setRespawnLocation(plugin.arena.getRandomSpawn());
-			} else {
-				Location spawn = plugin.arena.getSpawn();
-				if (spawn == null) {
-					return;
-				}
-				event.setRespawnLocation(spawn);
-				player.sendMessage(Util.formatMessage("If you want to leave the game type " + ChatColor.GOLD +"/maze leave"));
-			
-				for (Player p:plugin.arena.playing) {
-				    if (p.canSee(player)) p.showPlayer(player);
-				}
-			}
-			
-			return;
-		}
 			
 		player.getInventory().clear();
 		player.setSneaking(false);
