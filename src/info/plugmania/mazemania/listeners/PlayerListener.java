@@ -376,10 +376,17 @@ public class PlayerListener implements Listener {
 		ItemStack[] after=event.getInventory().getContents();
 		
 		String looted = plugin.util.createDifferenceString(plugin.util.compressInventory(before), plugin.util.compressInventory(after));
-		
-		if(looted.length()>=5) {
+		if(plugin.util.compressInventory(before).containsKey(Material.matchMaterial(plugin.mainConf.getString("itemToCollect", "GOLD_NUGGET")).getId())
+				&&plugin.mainConf.getString("mode", "collectItems").equalsIgnoreCase("collectItems")){
+			Util.broadcastInside(event.getPlayer() +
+					" Has found " +
+					Material.matchMaterial(plugin.mainConf.getString("itemToCollect", "GOLD_NUGGET")).toString() +
+					" with " +
+					(plugin.mainConf.getInt("itemAmountToCollect", 10)-plugin.util.compressInventory(before).get(Material.matchMaterial(plugin.mainConf.getString("itemToCollect", "GOLD_NUGGET")).getId())) + " remaining.");
+		}
+		else if(looted.length()>=5) {
 			Util.broadcastInside(ChatColor.GOLD + event.getPlayer().getName() + ChatColor.BLUE + " found " + looted + "!");
-		}		
+		}
 	}
 	
 	String strCompress(HashMap<String,Integer> items){
